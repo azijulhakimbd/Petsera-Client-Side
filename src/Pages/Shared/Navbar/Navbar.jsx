@@ -1,34 +1,45 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   FaHome,
   FaPaw,
   FaHeart,
   FaHandsHelping,
   FaPhoneAlt,
-  FaFileAlt,
+  FaTachometerAlt,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import ToggleTheme from "../../../Components/ToggleTheme";
+import { AuthContext } from "../../../Context/AuthContext";
 
 const Navbar = () => {
+  const { user, userSignOut } = useContext(AuthContext);
   const [isBlur, setIsBlur] = useState(false);
   const { pathname } = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // add / remove blur on scroll
   useEffect(() => {
     const onScroll = () => setIsBlur(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /** helper to style active / inactive links */
   const linkClass = (path) =>
     [
-      "flex items-center gap-2 px-4 py-2 rounded-md transition",
+      "flex items-center gap-2 px-4 py-2 rounded-md  transition",
       pathname === path
         ? "bg-primary text-primary-foreground"
         : "hover:bg-muted/60",
     ].join(" ");
+
+  const handleLogout = async () => {
+    try {
+      await userSignOut();
+      setDropdownOpen(false);
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   return (
     <nav
@@ -54,31 +65,81 @@ const Navbar = () => {
 
         {/* Desktop nav */}
         <ul className="hidden items-center gap-4 text-sm font-medium lg:flex">
-          <li><Link to="/"         className={linkClass("/")}        ><FaHome />Home</Link></li>
-          <li><Link to="/pets"     className={linkClass("/pets")}    ><FaPaw />Adopt</Link></li>
-          <li><Link to="/donate"   className={linkClass("/donate")}  ><FaHeart />Donate</Link></li>
+          <li><Link to="/" className={linkClass("/")}><FaHome />Home</Link></li>
+          <li><Link to="/pets" className={linkClass("/pets")}><FaPaw />Adopt</Link></li>
+          <li><Link to="/donate" className={linkClass("/donate")}><FaHeart />Donate</Link></li>
           <li><Link to="/volunteer" className={linkClass("/volunteer")}><FaHandsHelping />Volunteer</Link></li>
-          <li><Link to="/contact"  className={linkClass("/contact")} ><FaPhoneAlt />Contact</Link></li>
+          <li><Link to="/contact" className={linkClass("/contact")}><FaPhoneAlt />Contact</Link></li>
         </ul>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 relative">
           <ToggleTheme />
 
-          <Link
-            to="/login"
-            className="rounded-md px-3 py-2 text-sm font-medium
-                       text-primary underline-offset-2 hover:underline"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-md bg-primary px-3 py-2 text-sm font-medium
-                       text-primary-foreground hover:bg-primary/90"
-          >
-            Register
-          </Link>
+          {user ? (
+            <>
+              {/* Avatar Button */}
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="relative flex items-center gap-2 focus:outline-none"
+              >
+                {user.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName || "User"}
+                    className="w-9 h-9 rounded-full object-cover border border-primary"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-white font-bold">
+                    {user.displayName?.charAt(0).toUpperCase() || "U"}
+                  </div>
+                )}
+              </button>
+
+              {/* Dropdown Menu */}
+              {dropdownOpen && (
+                <div className="absolute top-12 right-0 bg-popover shadow-lg border rounded-md w-48 z-50">
+                  <div className="px-4 py-2 text-sm border-b text-yellow-400">
+                    {user.displayName || user.email}
+                  </div>
+                  <ul className="text-sm">
+                    <li>
+                      <Link
+                        to="/dashboard"
+                        className="flex items-center gap-2 text-green-300 px-4 py-2 hover:bg-muted/50"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <FaTachometerAlt /> Dashboard
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-muted/50"
+                      >
+                        <FaSignOutAlt /> Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                Register
+              </Link>
+            </>
+          )}
 
           {/* Mobile hamburger */}
           <div className="lg:hidden">
@@ -99,15 +160,31 @@ const Navbar = () => {
                 </svg>
               </summary>
 
-              <ul
-                className="absolute right-0 mt-2 w-56 space-y-1 rounded-md
-                           bg-popover p-2 shadow-lg"
-              >
-                <li><Link to="/"          className={linkClass("/")}         ><FaHome />Home</Link></li>
-                <li><Link to="/pets"      className={linkClass("/pets")}     ><FaPaw />Adopt</Link></li>
-                <li><Link to="/donate"    className={linkClass("/donate")}   ><FaHeart />Donate</Link></li>
+              <ul className="absolute right-0 mt-2 w-56 space-y-1 rounded-md bg-popover p-2 shadow-lg z-50">
+                <li><Link to="/" className={linkClass("/")}><FaHome />Home</Link></li>
+                <li><Link to="/pets" className={linkClass("/pets")}><FaPaw />Adopt</Link></li>
+                <li><Link to="/donate" className={linkClass("/donate")}><FaHeart />Donate</Link></li>
                 <li><Link to="/volunteer" className={linkClass("/volunteer")}><FaHandsHelping />Volunteer</Link></li>
-                <li><Link to="/contact"   className={linkClass("/contact")}  ><FaPhoneAlt />Contact</Link></li>
+                <li><Link to="/contact" className={linkClass("/contact")}><FaPhoneAlt />Contact</Link></li>
+
+                {user ? (
+                  <>
+                    <li><Link to="/dashboard" className={linkClass("/dashboard")}>Dashboard</Link></li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:underline"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li><Link to="/login" className={linkClass("/login")}>Login</Link></li>
+                    <li><Link to="/register" className={linkClass("/register")}>Register</Link></li>
+                  </>
+                )}
               </ul>
             </details>
           </div>
