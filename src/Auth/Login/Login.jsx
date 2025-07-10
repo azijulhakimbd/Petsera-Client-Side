@@ -5,7 +5,7 @@ import { FaUserAlt, FaLock, FaGoogle, FaGithub } from "react-icons/fa";
 import { AuthContext } from "../../Context/AuthContext";
 
 const Login = () => {
-  const { signIn, signInWithGoogle, signInWithGitHub } =
+  const { signIn, googleSignIn, githubSignIn } =
     useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ const Login = () => {
     setFirebaseError("");
     try {
       setSubmitting(true);
-      await signInWithGoogle();
+      await googleSignIn();
       navigate("/");
     } catch (err) {
       setFirebaseError("Google login failed.");
@@ -56,7 +56,7 @@ const Login = () => {
     setFirebaseError("");
     try {
       setSubmitting(true);
-      await signInWithGitHub();
+      await githubSignIn();
       navigate("/");
     } catch (err) {
       setFirebaseError("GitHub login failed.");
