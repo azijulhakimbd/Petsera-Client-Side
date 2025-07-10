@@ -41,7 +41,7 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-2">
               <FaEnvelope className="text-pink-500" />
-              support@petsera.com
+              support@petsera.org
             </li>
           </ul>
         </div>
@@ -50,9 +50,9 @@ const Footer = () => {
         <div>
           <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
           <div className="flex gap-4 text-xl">
-            <a href="#" className="text-blue-600 hover:text-blue-800"><FaFacebookF /></a>
-            <a href="#" className="text-pink-600 hover:text-pink-800"><FaInstagram /></a>
-            <a href="#" className="text-sky-500 hover:text-sky-700"><FaTwitter /></a>
+            <a href="https://www.facebook.com/azijulhakimbd" className="text-blue-600 hover:text-blue-800"><FaFacebookF /></a>
+            <a href="https://www.instagram.com/azijulhakimbd" className="text-pink-600 hover:text-pink-800"><FaInstagram /></a>
+            <a href="https://www.x.com/azijulhakimbd" className="text-sky-500 hover:text-sky-700"><FaTwitter /></a>
           </div>
         </div>
       </div>
