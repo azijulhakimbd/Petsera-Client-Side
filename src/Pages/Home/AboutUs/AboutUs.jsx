@@ -29,7 +29,7 @@ const AboutUs = () => {
           transition={{ duration: 0.6 }}
         >
           <img
-            src="https://i.ibb.co/5xGdk4D/about-petsera.jpg"
+            src="https://i.postimg.cc/yNwXRhKJ/pexels-pixabay-45170.jpg"
             alt="About Petsera"
             className="rounded-3xl shadow-lg w-full"
           />

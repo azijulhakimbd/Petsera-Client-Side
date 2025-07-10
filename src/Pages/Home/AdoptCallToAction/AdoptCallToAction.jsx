@@ -35,7 +35,7 @@ const AdoptCallToAction = () => {
           className="flex-1"
         >
           <img
-            src="https://i.ibb.co/hHXjLbF/adopt-pet.jpg"
+            src="https://i.postimg.cc/t4ch0dYr/pexels-pixabay-57416.jpg"
             alt="Adopt a pet"
             className="rounded-3xl shadow-xl w-full"
           />

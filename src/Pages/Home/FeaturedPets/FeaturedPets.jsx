@@ -10,7 +10,7 @@ const pets = [
     age: "5 Months Old",
     location: "Bangalore",
     uploader: "Ashwini",
-    image: "https://i.ibb.co/Gp1z8pz/dog1.jpg",
+    image: "https://i.postimg.cc/J73cyB2n/pexels-tdcat-59523.jpg",
   },
   {
     name: "Kitty",
@@ -19,7 +19,7 @@ const pets = [
     age: "5 Months Old",
     location: "Bangalore",
     uploader: "Ramesh",
-    image: "https://i.ibb.co/pdHDLZB/cat1.jpg",
+    image: "https://i.postimg.cc/8PtR4gDg/pexels-hnoody93-58997.jpg",
   },
   {
     name: "Hancock",
@@ -28,7 +28,7 @@ const pets = [
     age: "5 Months Old",
     location: "Bangalore",
     uploader: "Swalin",
-    image: "https://i.ibb.co/tZJ4kgc/dog2.jpg",
+    image: "https://i.postimg.cc/HntQFfy5/pexels-pixabay-164186.jpg",
   },
   {
     name: "Shadow",
@@ -37,14 +37,14 @@ const pets = [
     age: "5 Months Old",
     location: "Bangalore",
     uploader: "Molina",
-    image: "https://i.ibb.co/ZYR99Zk/dog3.jpg",
+    image: "https://i.postimg.cc/x8Qvx0cn/pexels-charlesdeluvio-1851164.jpg",
   },
 ];
 
 const FeaturedPets = () => {
   return (
-    <section className="py-16 px-4 bg-gradient-to-b  bg-[url('https://i.postimg.cc/P5QMBv19/paw-print-background-pattern-78370-3263-removebg-preview.png')] bg-cover">
-      <div className="max-w-7xl mx-auto text-center mb-12">
+    <section className="py-16 px-4 mx-auto bg-gradient-to-b  bg-[url('https://i.postimg.cc/P5QMBv19/paw-print-background-pattern-78370-3263-removebg-preview.png')] bg-cover">
+      <div className="max-w-7xl rounded-2xl mx-auto dark:bg-gray-600/40 bg-gray-50 text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold text-blue-900 dark:text-white">
           Looking to Adopt a Pet?
         </h2>
@@ -54,7 +54,7 @@ const FeaturedPets = () => {
       </div>
 
       {/* Pet Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-x-auto sm:overflow-visible pb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-90 overflow-x-auto sm:overflow-visible pb-6">
         {pets.map((pet, idx) => (
           <div
             key={idx}
