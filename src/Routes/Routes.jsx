@@ -14,6 +14,8 @@ import CreateDonationCampaign from "../Pages/UserDashboard/CreateDonationCampaig
 import AdoptionRequests from "../Pages/UserDashboard/AdoptionRequests/AdoptionRequests";
 import MyDonationCampaigns from "../Pages/UserDashboard/MyDonationCampaigns/MyDonationCampaigns";
 import MyDonations from "../Pages/UserDashboard/MyDonations/MyDonations";
+import PetListing from "../Pages/PetListing/PetsListing";
+import Volunteer from "../Pages/Volunteer/Volunteer";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ export const router = createBrowserRouter([
       {
         index:true,
         Component: HomeLayout
+      },
+      {
+        path:'pets',
+        Component: PetListing
+      },
+      {
+        path:'volunteer',
+        Component: Volunteer
       },
       {
         path:'login',
