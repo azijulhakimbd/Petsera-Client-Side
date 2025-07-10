@@ -1,7 +1,6 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,66 +8,91 @@ import {
   getPaginationRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import Modal from "react-modal";
-import { FaEdit, FaTrash, FaCheck } from "react-icons/fa";
-import { AuthContext } from "../../../Context/AuthContext";
-
-Modal.setAppElement("#root");
+import Swal from "sweetalert2";
+import { FaEdit, FaTrash, FaCheck, FaMoon, FaSun } from "react-icons/fa";
+import useAuth from "../../../Hooks/useAuth";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const MyAddedPets = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [sorting, setSorting] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedPetId, setSelectedPetId] = useState(null);
+  const queryClient = useQueryClient();
 
   const {
     data: pets = [],
-    refetch,
     isLoading,
+    isError,
+    error,
   } = useQuery({
-    queryKey: ["myPets", user?.email],
+    queryKey: ["pets", user?.email],
     queryFn: async () => {
-      const res = await axios.get(`/api/pets?email=${user?.email}`);
+      if (!user?.email) return [];
+      const res = await axiosSecure.get("/pets", {
+        params: { email: user.email },
+      });
       return res.data;
+    },
+    enabled: !!user?.email,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.delete(`/pets/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pets", user.email] });
+      Swal.fire("Deleted!", "Pet has been deleted.", "success");
+    },
+    onError: () => {
+      Swal.fire("Error!", "Failed to delete pet.", "error");
     },
   });
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`/api/pets/${selectedPetId}`);
-      refetch();
-      closeModal();
-    } catch (error) {
-      console.error("Delete failed", error);
+  const adoptMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/pets/adopt/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pets", user.email] });
+      Swal.fire("Success!", "Pet marked as adopted.", "success");
+    },
+    onError: () => {
+      Swal.fire("Error!", "Failed to mark adopted.", "error");
+    },
+  });
+
+  const handleDelete = (id, petName) => {
+    Swal.fire({
+      title: `Delete pet "${petName}"?`,
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(id);
+      }
+    });
+  };
+
+  const handleAdopt = (id, adopted) => {
+    if (adopted) {
+      Swal.fire("Info", "Pet is already adopted.", "info");
+      return;
     }
-  };
-
-  const handleAdopt = async (id) => {
-    try {
-      await axios.patch(`/api/pets/adopt/${id}`, { adopted: true });
-      refetch();
-    } catch (error) {
-      console.error("Adoption update failed", error);
-    }
-  };
-
-  const openModal = (id) => {
-    setSelectedPetId(id);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-    setSelectedPetId(null);
+    adoptMutation.mutate(id);
   };
 
   const columns = useMemo(
     () => [
       {
-        header: "SL",
-        accessorFn: (_, i) => i + 1,
-        cell: (info) => info.getValue(),
+        header: "S/N",
+        accessorKey: "serial",
+        cell: (info) => info.row.index + 1,
       },
       {
         header: "Pet Name",
@@ -81,164 +105,195 @@ const MyAddedPets = () => {
       {
         header: "Image",
         accessorKey: "image",
-        cell: ({ row }) => (
+        cell: (info) => (
           <img
-            src={row.original.image}
-            alt="pet"
-            className="w-16 h-16 rounded object-cover"
+            src={info.getValue()}
+            alt={info.row.original.name}
+            className="w-20 h-20 object-cover rounded"
           />
         ),
+        enableSorting: false,
       },
       {
         header: "Adoption Status",
         accessorKey: "adopted",
-        cell: ({ getValue }) =>
-          getValue() ? (
-            <span className="text-green-600 font-semibold">Adopted</span>
-          ) : (
-            <span className="text-red-600 font-semibold">Not Adopted</span>
-          ),
+        cell: (info) => (info.getValue() ? "Adopted" : "Not Adopted"),
       },
       {
         header: "Actions",
-        cell: ({ row }) => (
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate(`/dashboard/update-pet/${row.original._id}`)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"
-            >
-              <FaEdit />
-            </button>
-            <button
-              onClick={() => openModal(row.original._id)}
-              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
-            >
-              <FaTrash />
-            </button>
-            <button
-              disabled={row.original.adopted}
-              onClick={() => handleAdopt(row.original._id)}
-              className={`${
-                row.original.adopted
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-500 hover:bg-green-600"
-              } text-white px-2 py-1 rounded`}
-            >
-              <FaCheck />
-            </button>
-          </div>
-        ),
+        accessorKey: "actions",
+        cell: (info) => {
+          const pet = info.row.original;
+          return (
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={() => navigate(`/dashboard/update-pet/${pet._id}`)}
+                className="text-yellow-400 flex items-center gap-1"
+                title="Update"
+              >
+                <FaEdit />
+                Update
+              </button>
+              <button
+                onClick={() => handleDelete(pet._id, pet.name)}
+                className="text-red-500 flex items-center gap-1"
+                title="Delete"
+              >
+                <FaTrash />
+                Delete
+              </button>
+              <button
+                onClick={() => handleAdopt(pet._id, pet.adopted)}
+                className="text-green-500 flex items-center gap-1"
+                disabled={pet.adopted}
+                title="Mark as Adopted"
+              >
+                <FaCheck />
+                Adopted
+              </button>
+            </div>
+          );
+        },
+        enableSorting: false,
       },
     ],
-    []
+    [navigate]
   );
 
   const table = useReactTable({
     data: pets,
     columns,
-    state: { sorting },
-    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 10, pageIndex: 0 } },
   });
 
-  return (
-    <div className="p-4 max-w-7xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">My Added Pets</h2>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className="overflow-x-auto">
-            <table className="min-w-full table-auto border">
-              <thead className="bg-gray-100">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className="p-2 text-left cursor-pointer"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        {{
-                          asc: " 🔼",
-                          desc: " 🔽",
-                        }[header.column.getIsSorted()] ?? null}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id} className="border-t">
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="p-2">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-40 text-gray-500 dark:text-gray-400">
+        Loading pets...
+      </div>
+    );
+  if (isError)
+    return (
+      <div className="text-red-600 dark:text-red-400 text-center p-4">
+        Error: {error.message}
+      </div>
+    );
 
-          {/* Pagination */}
-          {table.getPageCount() > 1 && (
-            <div className="flex justify-between items-center mt-4">
+  return (
+    <div className="max-w-7xl mx-auto p-4 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">My Added Pets</h2>
+      </div>
+
+      <table className="min-w-full border border-gray-300 rounded overflow-hidden dark:border-gray-700">
+        <thead className="bg-gray-100 dark:bg-gray-800">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  className="border-b border-gray-300 dark:border-gray-700 px-4 py-2 cursor-pointer select-none text-center"
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  <div className="flex items-center justify-center gap-1 select-none">
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                    {{
+                      asc: " 🔼",
+                      desc: " 🔽",
+                    }[header.column.getIsSorted()] ?? null}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.length === 0 && (
+            <tr>
+              <td
+                colSpan={columns.length}
+                className="text-center py-4 dark:text-gray-400"
+              >
+                No pets added yet.
+              </td>
+            </tr>
+          )}
+
+          {table.getRowModel().rows.map((row) => (
+            <tr
+              key={row.id}
+              className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  className="border-b border-gray-200 dark:border-gray-700 px-4 py-3 text-center"
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+
+        {pets.length > 10 && (
+          <div className="flex justify-between items-center mt-4 text-gray-700 dark:text-gray-300">
+            <div>
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </div>
+
+            <div className="flex gap-2">
               <button
+                className="btn btn-sm"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
-                className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
               >
-                Previous
+                Prev
               </button>
-              <span>
-                Page {table.getState().pagination.pageIndex + 1} of{" "}
-                {table.getPageCount()}
-              </span>
               <button
+                className="btn btn-sm"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
-                className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
               >
                 Next
               </button>
             </div>
-          )}
-        </>
-      )}
+          </div>
+        )}
+      </table>
 
-      {/* Delete Modal */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Confirm Delete"
-        className="bg-white max-w-md mx-auto p-6 mt-40 rounded shadow-lg outline-none"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-40"
-      >
-        <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
-        <p className="mb-6">Are you sure you want to delete this pet?</p>
-        <div className="flex justify-end gap-4">
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center mt-4 text-gray-700 dark:text-gray-300">
+        <div>
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
+        </div>
+
+        <div className="flex gap-2">
           <button
-            onClick={closeModal}
-            className="px-4 py-2 bg-gray-400 text-white rounded"
+            className="btn btn-sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
           >
-            No
+            Prev
           </button>
           <button
-            onClick={handleDelete}
-            className="px-4 py-2 bg-red-500 text-white rounded"
+            className="btn btn-sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
           >
-            Yes, Delete
+            Next
           </button>
         </div>
-      </Modal>
+      </div>
     </div>
   );
 };

@@ -36,7 +36,7 @@ const AddPet = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
-
+  const imgKey =import.meta.env.VITE_IMGBB_API_KEY
   const uploadImage = async (file) => {
     setImageError("");
     setImageUploading(true);
@@ -45,7 +45,7 @@ const AddPet = () => {
 
     try {
       const res = await axios.post(
-        `https://api.imgbb.com/1/upload?key=3314df578de5d0a3cc3382b351cd658b`,
+        `https://api.imgbb.com/1/upload?key=${imgKey}`,
         formData
       );
       setImageUrl(res.data.data.url);

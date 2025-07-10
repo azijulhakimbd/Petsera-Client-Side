@@ -3,11 +3,11 @@ import axios from "axios";
 import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:3000", 
+  baseURL: "http://localhost:3000",
 });
 
 const useAxiosSecure = () => {
-  const { user } = useAuth(); 
+  const { user } = useAuth();
 
   useEffect(() => {
     const token = user?.accessToken || localStorage.getItem("access-token");
