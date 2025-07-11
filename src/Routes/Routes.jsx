@@ -17,6 +17,7 @@ import MyDonations from "../Pages/UserDashboard/MyDonations/MyDonations";
 import PetListing from "../Pages/PetListing/PetsListing";
 import Volunteer from "../Pages/Volunteer/Volunteer";
 import Contact from "../Pages/Contact/Contact";
+import DonationCampaigns from "../Pages/DonationCampaigns/DonationCampaigns";
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +33,8 @@ export const router = createBrowserRouter([
         Component: PetListing
       },
       {
-        path:'donate'
+        path:'donate',
+        Component: DonationCampaigns
       },
       {
         path:'volunteer',

@@ -19,10 +19,11 @@ const HomeLayout = () => {
     <AdoptCallToAction></AdoptCallToAction>
     {/* Feature Pets */}
     <FeaturedPets></FeaturedPets>
-     {/* About As */}
-    <AboutUs></AboutUs>
+   
     {/* How Its Work */}
     <HowItsWork></HowItsWork>
+      {/* About As */}
+    <AboutUs></AboutUs>
     {/* FAQ */}
     <FAQSection></FAQSection>
   </div>;

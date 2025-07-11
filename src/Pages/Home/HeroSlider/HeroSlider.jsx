@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const banners = [
   {
@@ -40,50 +42,63 @@ const banners = [
 ];
 
 const HeroSlider = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative w-full max-w-7xl mx-auto px-4 lg:px-8 pt-16 pb-10">
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={30}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-        loop
-        className="rounded-2xl overflow-hidden shadow-lg"
-      >
-        {banners.map((banner) => (
-          <SwiperSlide key={banner.id}>
-            <div
-              className="relative h-[500px] bg-cover bg-center flex items-center justify-start px-10"
-              style={{ backgroundImage: `url(${banner.image})` }}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className=" bg-black/40 p-6 mt-10 rounded-xl max-w-xl"
+      {loading ? (
+        <div className="h-[500px] rounded-2xl overflow-hidden shadow-lg">
+          <Skeleton height={500} className="w-full rounded-2xl" />
+        </div>
+      ) : (
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={30}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000 }}
+          loop
+          className="rounded-2xl overflow-hidden shadow-lg"
+        >
+          {banners.map((banner) => (
+            <SwiperSlide key={banner.id}>
+              <div
+                className="relative h-[500px] bg-cover bg-center flex items-center justify-start px-10"
+                style={{ backgroundImage: `url(${banner.image})` }}
               >
-                <motion.h2
-                  initial={{ opacity: 0, y: -20 }}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                  className="text-2xl md:text-5xl font-bold text-orange-400 mb-3 fredoka"
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="bg-black/40 p-6 mt-10 rounded-xl max-w-xl"
                 >
-                  {banner.title}
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.6 }}
-                  className="text-lg md:text-xl text-orange-300 lato"
-                >
-                  {banner.subtitle}
-                </motion.p>
-              </motion.div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                  <motion.h2
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.6 }}
+                    className="text-2xl md:text-5xl font-bold text-orange-400 mb-3 fredoka"
+                  >
+                    {banner.title}
+                  </motion.h2>
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                    className="text-lg md:text-xl text-orange-300 lato"
+                  >
+                    {banner.subtitle}
+                  </motion.p>
+                </motion.div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </div>
   );
 };

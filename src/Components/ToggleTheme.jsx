@@ -24,9 +24,9 @@ const ToggleTheme = () => {
       aria-label="Toggle Theme"
     >
       {theme === "light" ? (
-        <MdDarkMode size={24} />
+        <MdDarkMode size={24} className="text-pink-600"/>
       ) : (
-        <MdLightMode size={24} />
+        <MdLightMode size={24} className="text-pink-600"/>
       )}
     </button>
   );

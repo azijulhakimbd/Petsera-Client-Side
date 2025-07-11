@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
@@ -9,7 +9,7 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import Swal from "sweetalert2";
-import { FaEdit, FaTrash, FaCheck, FaMoon, FaSun } from "react-icons/fa";
+import { FaEdit, FaTrash, FaCheck } from "react-icons/fa";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
@@ -242,58 +242,34 @@ const MyAddedPets = () => {
             </tr>
           ))}
         </tbody>
-
-        {pets.length > 10 && (
-          <div className="flex justify-between items-center mt-4 text-gray-700 dark:text-gray-300">
-            <div>
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </div>
-
-            <div className="flex gap-2">
-              <button
-                className="btn btn-sm"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Prev
-              </button>
-              <button
-                className="btn btn-sm"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
       </table>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-between items-center mt-4 text-gray-700 dark:text-gray-300">
-        <div>
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </div>
+      {/* ✅ Pagination shown only if more than 10 pets */}
+      {pets.length > 10 && (
+        <div className="flex justify-between items-center mt-4 text-gray-700 dark:text-gray-300">
+          <div>
+            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}
+          </div>
 
-        <div className="flex gap-2">
-          <button
-            className="btn btn-sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Prev
-          </button>
-          <button
-            className="btn btn-sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </button>
+          <div className="flex gap-2">
+            <button
+              className="btn btn-sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Prev
+            </button>
+            <button
+              className="btn btn-sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

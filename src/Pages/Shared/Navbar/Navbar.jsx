@@ -28,7 +28,7 @@ const Navbar = () => {
     [
       "flex items-center gap-2 px-4 py-2 rounded-md  transition",
       pathname === path
-        ? "bg-primary text-primary-foreground"
+        ? "bg-primary text-pink-600"
         : "hover:bg-muted/60",
     ].join(" ");
 
@@ -58,13 +58,11 @@ const Navbar = () => {
             alt="Petsera logo"
             className="w-16"
           />
-          <span className="hidden text-xl font-bold text-primary sm:block">
-            Petsera
-          </span>
+         
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden items-center gap-4 text-sm font-medium lg:flex">
+        <ul className="hidden items-center gap-4 text-pink-600 font-medium lg:flex">
           <li><Link to="/" className={linkClass("/")}><FaHome />Home</Link></li>
           <li><Link to="/pets" className={linkClass("/pets")}><FaPaw />Adopt</Link></li>
           <li><Link to="/donate" className={linkClass("/donate")}><FaHeart />Donate</Link></li>
@@ -99,7 +97,7 @@ const Navbar = () => {
               {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div className="absolute top-12 right-0 bg-popover shadow-lg border rounded-md w-48 z-50">
-                  <div className="px-4 py-2 text-sm border-b text-yellow-400">
+                  <div className="px-4 py-2 text-sm border-b text-pink-600">
                     {user.displayName || user.email}
                   </div>
                   <ul className="text-sm">
