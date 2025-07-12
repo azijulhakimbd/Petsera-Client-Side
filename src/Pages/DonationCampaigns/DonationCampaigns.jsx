@@ -1,107 +1,119 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Skeleton from "react-loading-skeleton";
+
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+
+const PAGE_SIZE = 6;
 
 const DonationCampaigns = () => {
+  const axiosSecure = useAxiosSecure();
   const [campaigns, setCampaigns] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const loader = useRef(null);
+  const [initialLoading, setInitialLoading] = useState(true);
 
-  const fetchCampaigns = async (pageNumber) => {
-    try {
-      const res = await axios.get(`/api/donations?page=${pageNumber}&limit=6`);
-      console.log("API Response:", res.data); // Debugging line
+  // Fetch campaigns paginated & sorted by date descending
+  const fetchCampaigns = async () => {
+    const res = await axiosSecure.get(
+      `/donations?page=${page}&limit=${PAGE_SIZE}&sort=desc`
+    );
+    const newCampaigns = res.data;
 
-      const campaignArray = Array.isArray(res.data)
-        ? res.data
-        : res.data.data || [];
-
-      if (!Array.isArray(campaignArray) || campaignArray.length === 0) {
-        setHasMore(false);
-        return;
-      }
-
-      const sorted = campaignArray.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-
-      setCampaigns((prev) => [...prev, ...sorted]);
-    } catch (err) {
-      console.error("Failed to fetch campaigns:", err);
+    if (newCampaigns.length < PAGE_SIZE) {
       setHasMore(false);
     }
+
+    setCampaigns((prev) => [...prev, ...newCampaigns]);
+    setPage((prev) => prev + 1);
+    setInitialLoading(false);
   };
 
   useEffect(() => {
-    fetchCampaigns(page);
-  }, [page]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPage((prev) => prev + 1);
-        }
-      },
-      { threshold: 1 }
-    );
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
-    return () => {
-      if (loader.current) observer.unobserve(loader.current);
-    };
-  }, [hasMore]);
+    fetchCampaigns();
+  }, []);
 
   return (
-    <section className="max-w-7xl min-h-screen mx-auto px-6 py-25">
-      <h2 className="text-3xl font-bold text-pink-600 mb-10">Donation Campaigns</h2>
+    <section className="max-w-7xl mx-auto px-4 py-10">
+      <h2 className="text-2xl font-bold text-center mb-8">Donation Campaigns</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {campaigns.map((item) => (
-          <motion.div
-            key={item._id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden"
-          >
-            <img
-              src={item.petImage}
-              alt={item.petName}
-              className="w-full h-52 object-cover"
-            />
-            <div className="p-4 space-y-2">
-              <h3 className="text-xl font-semibold">{item.petName}</h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                Max Donation: <span className="font-bold">${item.maxDonation}</span>
-              </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                Donated: <span className="font-bold">${item.donatedAmount}</span>
-              </p>
-              <Link
-                to={`/donation-campaign/${item._id}`}
-                className="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                View Details
-              </Link>
+      {initialLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden p-4"
+            >
+              <Skeleton height={180} />
+              <Skeleton height={20} className="my-2" />
+              <Skeleton width={120} />
+              <Skeleton width={180} />
+              <Skeleton height={10} className="my-2" />
+              <Skeleton height={30} />
             </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Infinite Scroll Loader */}
-      {hasMore && (
-        <div ref={loader} className="text-center mt-10 text-gray-500 dark:text-gray-400">
-          Loading more campaigns...
+          ))}
         </div>
-      )}
-      {!hasMore && campaigns.length > 0 && (
-        <p className="text-center mt-10 text-gray-500 dark:text-gray-400">
-          You've reached the end.
-        </p>
+      ) : (
+        <InfiniteScroll
+          dataLength={campaigns.length}
+          next={fetchCampaigns}
+          hasMore={hasMore}
+          loader={<p className="text-center mt-4">Loading more...</p>}
+          endMessage={
+            <p className="text-center text-gray-500 mt-6">🎉 You've reached the end!</p>
+          }
+        >
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            {campaigns.map((campaign) => (
+              <motion.div
+                key={campaign._id}
+                className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden border"
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+              >
+                <img
+                  src={campaign.image}
+                  alt={campaign.petName}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Max Amount: <strong>${campaign.maxAmount.toFixed(2)}</strong>
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                    Donated: <strong>${campaign.totalDonated || 0}</strong>
+                  </p>
+
+                  <progress
+                    className="progress progress-success w-full mb-3"
+                    value={campaign.totalDonated || 0}
+                    max={campaign.maxAmount}
+                  ></progress>
+
+                  <Link
+                    to={`/donations/${campaign._id}`}
+                    className="btn bg-blue-500 rounded-2xl p-2 hover:bg-amber-300 btn-sm btn-primary w-full"
+                  >
+                    View Details
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </InfiniteScroll>
       )}
     </section>
   );

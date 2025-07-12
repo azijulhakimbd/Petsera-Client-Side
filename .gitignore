@@ -22,8 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-CreateDonationCampaign.jsx
 AdoptionRequests.jsx
-MyDonationCampaigns.jsx
 MyDonations.jsx
-PetsListing.jsx

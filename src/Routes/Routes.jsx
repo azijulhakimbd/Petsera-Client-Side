@@ -1,6 +1,4 @@
-import {
-  createBrowserRouter
-} from "react-router";
+import { createBrowserRouter } from "react-router";
 import Root from "../Layout/Root/Root";
 import HomeLayout from "../Layout/HomeLayout/HomeLayout";
 import Login from "../Auth/Login/Login";
@@ -19,91 +17,117 @@ import Volunteer from "../Pages/Volunteer/Volunteer";
 import Contact from "../Pages/Contact/Contact";
 import DonationCampaigns from "../Pages/DonationCampaigns/DonationCampaigns";
 import PetDetails from "../Pages/PetListing/PetDetails";
-
+import DonationDetails from "../Pages/DonationCampaigns/DonationDetails";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component:Root,
-    children:[
+    Component: Root,
+    children: [
       {
-        index:true,
-        Component: HomeLayout
+        index: true,
+        Component: HomeLayout,
       },
       {
-        path:'pets',
-        Component: PetListing
+        path: "pets",
+        Component: PetListing,
       },
       {
-        path:'pet/:id',
-        Component: PetDetails
+        path: "pet/:id",
+        Component: PetDetails,
       },
       {
-        path:'donate',
-        Component: DonationCampaigns
+        path: "donate",
+        Component: DonationCampaigns,
       },
       {
-        path:'volunteer',
-        Component: Volunteer
+        path: "donations/:id",
+        element: (
+          <Elements stripe={stripePromise}>
+            <DonationDetails />
+          </Elements>
+        ),
       },
       {
-        path:'contact',
-        Component: Contact
+        path: "volunteer",
+        Component: Volunteer,
       },
       {
-        path:'login',
-        Component: Login
+        path: "contact",
+        Component: Contact,
       },
       {
-        path:'register',
-        Component: Register
-      }
-    ]
+        path: "login",
+        Component: Login,
+      },
+      {
+        path: "register",
+        Component: Register,
+      },
+    ],
   },
   {
-    path:'dashboard',
-    Component:DashboardLayout,
-    children:[
+    path: "dashboard",
+    Component: DashboardLayout,
+    children: [
       {
-        path:'add-pet',
-        element: <PrivateRoute>
-          <AddPet></AddPet>
-        </PrivateRoute>
+        path: "add-pet",
+        element: (
+          <PrivateRoute>
+            <AddPet></AddPet>
+          </PrivateRoute>
+        ),
       },
       {
-        path:'my-pets',
-        element:<PrivateRoute>
-          <MyAddedPets></MyAddedPets>
-        </PrivateRoute>
+        path: "my-pets",
+        element: (
+          <PrivateRoute>
+            <MyAddedPets></MyAddedPets>
+          </PrivateRoute>
+        ),
       },
       {
-        path:'update-pet/:id',
-        element:<PrivateRoute>
-          <UpdateMyPet></UpdateMyPet>
-        </PrivateRoute>
+        path: "update-pet/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateMyPet></UpdateMyPet>
+          </PrivateRoute>
+        ),
       },
       {
-        path:'adoption-requests',
-        element: <PrivateRoute>
-          <AdoptionRequests></AdoptionRequests>
-        </PrivateRoute>
+        path: "adoption-requests",
+        element: (
+          <PrivateRoute>
+            <AdoptionRequests></AdoptionRequests>
+          </PrivateRoute>
+        ),
       },
       {
-        path:'create-campaign',
-        Component: CreateDonationCampaign
+        path: "create-campaign",
+        element: (
+          <PrivateRoute>
+            <CreateDonationCampaign></CreateDonationCampaign>
+          </PrivateRoute>
+        ),
       },
       {
-        path:'my-campaigns',
-        element:<PrivateRoute>
-          <MyDonationCampaigns></MyDonationCampaigns>
-        </PrivateRoute>
+        path: "my-campaigns",
+        element: (
+          <PrivateRoute>
+            <MyDonationCampaigns></MyDonationCampaigns>
+          </PrivateRoute>
+        ),
       },
       {
-        path:'my-donations',
-        element:<PrivateRoute>
-          <MyDonations></MyDonations>
-        </PrivateRoute>
+        path: "my-donations",
+        element: (
+          <PrivateRoute>
+            <MyDonations></MyDonations>
+          </PrivateRoute>
+        ),
       },
-    ]
-  }
+    ],
+  },
 ]);
-
