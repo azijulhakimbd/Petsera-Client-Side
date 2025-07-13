@@ -17,18 +17,28 @@ const DonationCampaigns = () => {
 
   // Fetch campaigns paginated & sorted by date descending
   const fetchCampaigns = async () => {
-    const res = await axiosSecure.get(
-      `/donations?page=${page}&limit=${PAGE_SIZE}&sort=desc`
-    );
-    const newCampaigns = res.data;
+    try {
+      const res = await axiosSecure.get(
+        `/donations?page=${page}&limit=${PAGE_SIZE}&sort=desc`
+      );
+      const newCampaigns = res.data;
 
-    if (newCampaigns.length < PAGE_SIZE) {
-      setHasMore(false);
+      if (newCampaigns.length < PAGE_SIZE) {
+        setHasMore(false);
+      }
+
+      setCampaigns((prev) => {
+        // Filter duplicates by _id
+        const existingIds = new Set(prev.map((c) => c._id));
+        const uniqueNew = newCampaigns.filter((c) => !existingIds.has(c._id));
+        return [...prev, ...uniqueNew];
+      });
+
+      setPage((prev) => prev + 1);
+      setInitialLoading(false);
+    } catch (err) {
+      console.error("Error fetching campaigns:", err);
     }
-
-    setCampaigns((prev) => [...prev, ...newCampaigns]);
-    setPage((prev) => prev + 1);
-    setInitialLoading(false);
   };
 
   useEffect(() => {
@@ -41,7 +51,7 @@ const DonationCampaigns = () => {
 
       {initialLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(PAGE_SIZE)].map((_, i) => (
             <div
               key={i}
               className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden p-4"
@@ -89,7 +99,10 @@ const DonationCampaigns = () => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
-                  
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">
+                    {campaign.petName || "Unnamed Pet"}
+                  </h3>
+
                   <p className="text-sm text-gray-600 dark:text-gray-300">
                     Max Amount: <strong>${campaign.maxAmount.toFixed(2)}</strong>
                   </p>

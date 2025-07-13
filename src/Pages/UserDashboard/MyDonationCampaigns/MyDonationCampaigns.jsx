@@ -5,7 +5,12 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Modal from "react-modal";
-import { FaPauseCircle, FaPlayCircle, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import {
+  FaPauseCircle,
+  FaPlayCircle,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 
 Modal.setAppElement("#root");
 
@@ -56,6 +61,7 @@ const MyDonationCampaigns = () => {
         <table className="table w-full">
           <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white">
             <tr>
+              <th>Pet Name</th>
               <th>Max Amount</th>
               <th>Progress</th>
               <th>Status</th>
@@ -68,6 +74,7 @@ const MyDonationCampaigns = () => {
 
               return (
                 <tr key={campaign._id}>
+                  <td>{campaign.petName || "N/A"}</td>
                   <td>${campaign.maxAmount.toFixed(2)}</td>
                   <td>
                     <progress
@@ -150,7 +157,10 @@ const MyDonationCampaigns = () => {
           <p>No donations yet.</p>
         )}
         <div className="mt-4 text-right">
-          <button onClick={() => setModalOpen(false)} className="boutline border p-1 rounded btn-sm btn-error">
+          <button
+            onClick={() => setModalOpen(false)}
+            className="btn btn-sm btn-error border p-1 rounded"
+          >
             Close
           </button>
         </div>

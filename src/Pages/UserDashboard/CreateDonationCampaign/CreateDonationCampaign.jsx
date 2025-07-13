@@ -10,19 +10,22 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const CreateDonationCampaign = () => {
   const { user } = useContext(AuthContext);
-  const axiosSecure =useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
+
   const [uploading, setUploading] = useState(false);
 
   const onSubmit = async (data) => {
     try {
       setUploading(true);
 
+      // Upload image to imgbb
       const formData = new FormData();
       formData.append("image", data.picture[0]);
 
@@ -33,7 +36,9 @@ const CreateDonationCampaign = () => {
 
       const imageUrl = imgRes.data.data.url;
 
+      // Prepare donation campaign object
       const newCampaign = {
+        petName: data.petName,
         image: imageUrl,
         maxAmount: parseFloat(data.maxAmount),
         lastDate: data.lastDate,
@@ -43,6 +48,7 @@ const CreateDonationCampaign = () => {
         createdBy: user?.email,
       };
 
+      // Post to backend
       const res = await axiosSecure.post("/donations", newCampaign);
 
       if (res.data.insertedId) {
@@ -69,6 +75,28 @@ const CreateDonationCampaign = () => {
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+        {/* Pet Name */}
+        <div>
+          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+            Pet Name
+          </label>
+          {uploading ? (
+            <Skeleton height={40} />
+          ) : (
+            <>
+              <input
+                type="text"
+                {...register("petName", { required: "Pet name is required" })}
+                className="input border rounded input-bordered w-full"
+              />
+              {errors.petName && (
+                <p className="text-red-500">{errors.petName.message}</p>
+              )}
+            </>
+          )}
+        </div>
+
         {/* Pet Picture */}
         <div>
           <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
