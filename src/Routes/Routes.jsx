@@ -20,6 +20,11 @@ import PetDetails from "../Pages/PetListing/PetDetails";
 import DonationDetails from "../Pages/DonationCampaigns/DonationDetails";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import AdminRoute from "./AdminRoute/AdminRoute";
+import AllPets from "../Pages/AdminDashboard/AllPets/AllPets";
+import AccessDenied from "../Pages/AdminDashboard/AccessDenied/AccessDenied";
+import AllUsers from "../Pages/AdminDashboard/AllUsers/AllUsers";
+import DashboardHome from "../Layout/DashboardLayout/DashboardHome";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
@@ -66,11 +71,17 @@ export const router = createBrowserRouter([
         path: "register",
         Component: Register,
       },
+      {
+        path:'access-denied',
+        Component:AccessDenied
+      }
     ],
   },
   {
     path: "dashboard",
-    Component: DashboardLayout,
+    element:<PrivateRoute>
+     <DashboardHome></DashboardHome>
+    </PrivateRoute>,
     children: [
       {
         path: "add-pet",
@@ -128,6 +139,24 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path:'all-pets',
+        element: 
+          <AdminRoute>
+            <AllPets></AllPets>
+          </AdminRoute>
+      },
+      {
+        path:'users',
+        element: <AdminRoute>
+          <AllUsers></AllUsers>
+        </AdminRoute>
+      },
+      {
+        path:'all-donations',
+        
+       
+      }
     ],
   },
 ]);

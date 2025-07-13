@@ -184,7 +184,7 @@ const CreateDonationCampaign = () => {
         <div>
           <motion.button
             type="submit"
-            className="btn btn-primary w-full"
+            className="btn bg-yellow-500 text-shadow-fuchsia-500 border p-2 rounded-2xl hover:bg-green-500 btn-primary w-full"
             disabled={isSubmitting || uploading}
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.02 }}

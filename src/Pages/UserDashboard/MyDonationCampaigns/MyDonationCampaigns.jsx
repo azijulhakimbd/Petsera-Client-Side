@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Modal from "react-modal";
+import { FaPauseCircle, FaPlayCircle, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 Modal.setAppElement("#root");
 
@@ -17,17 +18,15 @@ const MyDonationCampaigns = () => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Fetch user-created donation campaigns
   const { data: campaigns = [], isLoading } = useQuery({
     queryKey: ["myDonations", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/api/donations?email=${user.email}`);
+      const res = await axiosSecure.get(`/donations?email=${user.email}`);
       return res.data;
     },
   });
 
-  // Pause/unpause campaign
   const pauseMutation = useMutation({
     mutationFn: async ({ id, paused }) => {
       const res = await axiosSecure.patch(`/api/donations/pause/${id}`, { paused });
@@ -57,7 +56,6 @@ const MyDonationCampaigns = () => {
         <table className="table w-full">
           <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white">
             <tr>
-              <th>Pet Name</th>
               <th>Max Amount</th>
               <th>Progress</th>
               <th>Status</th>
@@ -67,11 +65,9 @@ const MyDonationCampaigns = () => {
           <tbody>
             {campaigns.map((campaign) => {
               const donated = campaign.totalDonated || 0;
-              const percent = Math.min((donated / campaign.maxAmount) * 100, 100);
 
               return (
                 <tr key={campaign._id}>
-                  <td>{campaign.petName || "N/A"}</td>
                   <td>${campaign.maxAmount.toFixed(2)}</td>
                   <td>
                     <progress
@@ -83,28 +79,44 @@ const MyDonationCampaigns = () => {
                       ${donated} / {campaign.maxAmount}
                     </span>
                   </td>
-                  <td>
+                  <td className="flex items-center gap-1">
                     {campaign.paused ? (
-                      <span className="badge badge-warning">Paused</span>
+                      <>
+                        <FaPauseCircle className="text-yellow-500" />
+                        <span className="badge badge-warning">Paused</span>
+                      </>
                     ) : (
-                      <span className="badge badge-success">Active</span>
+                      <>
+                        <FaCheckCircle className="text-green-500" />
+                        <span className="badge badge-success">Active</span>
+                      </>
                     )}
                   </td>
                   <td className="space-x-2 text-center">
                     <button
-                      className="btn btn-xs btn-outline"
+                      className="btn btn-outline hover:bg-red-600 border p-1 rounded btn-outline"
                       onClick={() => handlePauseToggle(campaign._id, campaign.paused)}
                     >
-                      {campaign.paused ? "Unpause" : "Pause"}
+                      {campaign.paused ? (
+                        <>
+                          <FaPlayCircle className="inline mr-1" />
+                          Unpause
+                        </>
+                      ) : (
+                        <>
+                          <FaPauseCircle className="inline mr-1" />
+                          Pause
+                        </>
+                      )}
                     </button>
                     <button
-                      className="btn btn-xs btn-info"
+                      className="btn btn-outline hover:bg-yellow-400 border p-1 rounded btn-info"
                       onClick={() => navigate(`/dashboard/edit-donation/${campaign._id}`)}
                     >
                       Edit
                     </button>
                     <button
-                      className="btn btn-xs btn-secondary"
+                      className="btn btn-outline hover:bg-blue-600 border p-1 rounded btn-secondary"
                       onClick={() => handleViewDonators(campaign)}
                     >
                       View Donators
@@ -122,7 +134,7 @@ const MyDonationCampaigns = () => {
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
         className="bg-white dark:bg-gray-900 p-6 max-w-lg mx-auto mt-20 rounded-lg shadow-lg"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center"
+        overlayClassName="fixed inset-0 bg-black/80 bg-opacity-50 flex items-start justify-center"
       >
         <h3 className="text-xl font-semibold mb-4">Donators</h3>
         {selectedCampaign?.donators?.length > 0 ? (
@@ -138,7 +150,7 @@ const MyDonationCampaigns = () => {
           <p>No donations yet.</p>
         )}
         <div className="mt-4 text-right">
-          <button onClick={() => setModalOpen(false)} className="btn btn-sm btn-error">
+          <button onClick={() => setModalOpen(false)} className="boutline border p-1 rounded btn-sm btn-error">
             Close
           </button>
         </div>

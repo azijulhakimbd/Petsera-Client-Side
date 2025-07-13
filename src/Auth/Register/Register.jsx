@@ -1,221 +1,189 @@
-import React, { useContext, useState } from "react";
-import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router-dom";
-import {
-  FaUserAlt,
-  FaLock,
-  FaGoogle,
-  FaGithub,
-  FaUserCircle,
-} from "react-icons/fa";
-import { updateProfile } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { AuthContext } from "../../Context/AuthContext";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaUserAlt, FaLock, FaImage, FaEnvelope } from 'react-icons/fa';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
+import useAxios from '../../Hooks/useAxios';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
-  const { createUser, googleSignIn, githubSignIn } = useContext(AuthContext);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { createUser, updateUserProfile } = useAuth();
+  const [profilePic, setProfilePic] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const axiosInstance = useAxios();
+  const location = useLocation();
   const navigate = useNavigate();
+  const from = location.state?.from || '/';
 
-  const [fullName, setFullName] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firebaseError, setFirebaseError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0];
+    if (!image) return;
 
-  const handleImageChange = (e) => {
-    if (e.target.files?.[0]) {
-      setImageFile(e.target.files[0]);
+    const formData = new FormData();
+    formData.append('image', image);
+
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`;
+
+    try {
+      setUploading(true);
+      const res = await axios.post(imageUploadUrl, formData);
+      setProfilePic(res.data.data.url);
+    } catch (err) {
+      console.error('Image upload failed:', err);
+    } finally {
+      setUploading(false);
     }
   };
 
-  const uploadImageAndGetUrl = async (file, userId) => {
-    const storage = getStorage();
-    const imageRef = ref(storage, `userProfiles/${userId}/${file.name}`);
-    await uploadBytes(imageRef, file);
-    return await getDownloadURL(imageRef);
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setFirebaseError("");
-
-    if (!fullName || !email || !password) {
-      return setFirebaseError("Please fill in all required fields.");
-    }
-    if (password.length < 6) {
-      return setFirebaseError("Password must be at least 6 characters.");
+  const onSubmit = async (data) => {
+    if (!profilePic) {
+      return Swal.fire('Upload Error', 'Please upload a profile picture.', 'warning');
     }
 
     try {
-      setSubmitting(true);
-      const userCredential = await createUser(email, password);
-      const user = userCredential.user;
+      const result = await createUser(data.email, data.password);
+      const user = result.user;
 
-      let photoURL = null;
-      if (imageFile) {
-        photoURL = await uploadImageAndGetUrl(imageFile, user.uid);
-      }
-
-      await updateProfile(user, {
-        displayName: fullName,
-        photoURL,
+      await updateUserProfile({
+        displayName: data.name,
+        photoURL: profilePic
       });
 
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      setFirebaseError("Registration failed. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        photoURL: profilePic,
+        role: 'user',
+        created_at: new Date().toISOString(),
+        last_log_in: new Date().toISOString()
+      };
 
-  const handleGoogleRegister = async () => {
-    try {
-      setSubmitting(true);
-      await googleSignIn();
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      setFirebaseError("Google sign in failed.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+      const res = await axiosInstance.post('/users', userInfo);
 
-  const handleGitHubRegister = async () => {
-    try {
-      setSubmitting(true);
-      await githubSignIn();
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      setFirebaseError("GitHub sign in failed.");
-    } finally {
-      setSubmitting(false);
+      if (res.data.insertedId || res.data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful!',
+          text: 'Welcome to our platform!',
+        }).then(() => {
+          navigate(from, { replace: true });
+        });
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      Swal.fire('Error', error.message || 'Registration failed', 'error');
     }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center px-4"
+      className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 dark:bg-gray-900"
       style={{
-        backgroundImage: "url(https://i.postimg.cc/DwcRJwWL/Hero-slider.jpg)",
+        backgroundImage:
+          "url('https://i.postimg.cc/DwcRJwWL/Hero-slider.jpg')",
       }}
     >
       <motion.div
-        initial={{ y: 60, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-gray-800/40 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-md"
+        className="w-full max-w-md bg-white/90 dark:bg-gray-800/80 backdrop-blur-md rounded-xl shadow-2xl p-8"
       >
-        <h2 className="text-2xl font-bold text-center text-blue-800 mb-6">
-          Create an account
+        <h2 className="text-3xl font-bold text-center text-pink-600 dark:text-pink-400 mb-6">
+          Create Account
         </h2>
 
-        {firebaseError && (
-          <p className="text-sm text-red-500 text-center mb-4">
-            {firebaseError}
-          </p>
-        )}
-
-        <form onSubmit={handleRegister} className="space-y-5">
-          {/* Full Name */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name */}
           <div className="relative">
-            <FaUserCircle className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <FaUserAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              id="fullName"
               type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="John Doe"
-              className="w-full pl-10 pr-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              {...register('name', { required: true })}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400"
+              placeholder="Full Name"
             />
+            {errors.name && <p className="text-sm text-red-500 mt-1">Name is required</p>}
           </div>
 
-          {/* Profile Image Upload */}
+          {/* Profile Picture Upload */}
           <div>
-            <label
-              htmlFor="profileImage"
-              className="text-sm  font-medium text-white"
-            >
-              Profile Image
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <FaImage /> Upload Profile Picture
             </label>
             <input
-              id="profileImage"
               type="file"
+              onChange={handleImageUpload}
               accept="image/*"
-              onChange={handleImageChange}
-              className="block w-full text-sm  pl-10 pr-3 py-2  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-300 mt-1"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white rounded-md"
             />
+            {uploading ? (
+              <Skeleton height={32} className="mt-2" />
+            ) : profilePic ? (
+              <img
+                src={profilePic}
+                alt="Preview"
+                className="w-16 h-16 rounded-full mt-3 object-cover border"
+              />
+            ) : null}
           </div>
 
           {/* Email */}
           <div className="relative">
-            <FaUserAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full pl-10 pr-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              {...register('email', { required: true })}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400"
+              placeholder="Email"
             />
+            {errors.email && <p className="text-sm text-red-500 mt-1">Email is required</p>}
           </div>
 
           {/* Password */}
           <div className="relative">
             <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Your password"
-              className="w-full pl-10 pr-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              {...register('password', { required: true, minLength: 6 })}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400"
+              placeholder="Password"
             />
+            {errors.password?.type === 'required' && (
+              <p className="text-sm text-red-500 mt-1">Password is required</p>
+            )}
+            {errors.password?.type === 'minLength' && (
+              <p className="text-sm text-red-500 mt-1">Password must be at least 6 characters</p>
+            )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            disabled={submitting}
+            disabled={uploading}
             className={`w-full py-2 rounded-md text-white font-semibold transition ${
-              submitting
-                ? "bg-blue-300 cursor-not-allowed"
-                : "bg-blue-700 hover:bg-blue-800"
+              uploading ? 'bg-pink-300 cursor-not-allowed' : 'bg-pink-600 hover:bg-pink-700'
             }`}
           >
-            {submitting ? "Registering..." : "Register"}
+            {uploading ? 'Uploading...' : 'Register'}
           </button>
         </form>
 
-        {/* Social Login */}
-        <div className="mt-6 flex items-center justify-center gap-4">
-          <button
-            onClick={handleGoogleRegister}
-            disabled={submitting}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-white font-semibold transition"
-          >
-            <FaGoogle /> Google
-          </button>
-
-          <button
-            onClick={handleGitHubRegister}
-            disabled={submitting}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 rounded-md text-white font-semibold transition"
-          >
-            <FaGithub /> GitHub
-          </button>
-        </div>
-
-        <p className="text-sm text-center mt-4 text-white">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-400 hover:underline">
+        <p className="mt-4 text-center text-sm text-gray-700 dark:text-gray-300">
+          Already have an account?{' '}
+          <Link to="/login" className="text-pink-600 dark:text-pink-400 hover:underline font-medium">
             Login
           </Link>
         </p>
+
+        <div className="mt-6">
+          <SocialLogin />
+        </div>
       </motion.div>
     </div>
   );

@@ -1,14 +1,15 @@
 import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { FaUserAlt, FaLock, FaGoogle, FaGithub } from "react-icons/fa";
 import { AuthContext } from "../../Context/AuthContext";
 
 const Login = () => {
-  const { signIn, googleSignIn, githubSignIn } =
-    useContext(AuthContext);
-  const navigate = useNavigate();
+  const { signIn, googleSignIn, githubSignIn } = useContext(AuthContext);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
   const [firebaseError, setFirebaseError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +32,7 @@ const Login = () => {
     try {
       setSubmitting(true);
       await signIn(email, password);
-      navigate("/");
+      navigate(from);
     } catch (err) {
       setFirebaseError("Login failed. Please check your credentials.");
     } finally {
@@ -44,7 +45,7 @@ const Login = () => {
     try {
       setSubmitting(true);
       await googleSignIn();
-      navigate("/");
+      navigate(from);
     } catch (err) {
       setFirebaseError("Google login failed.");
     } finally {
@@ -57,7 +58,7 @@ const Login = () => {
     try {
       setSubmitting(true);
       await githubSignIn();
-      navigate("/");
+      navigate(from);
     } catch (err) {
       setFirebaseError("GitHub login failed.");
     } finally {

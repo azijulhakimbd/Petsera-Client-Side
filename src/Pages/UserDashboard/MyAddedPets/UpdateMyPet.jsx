@@ -105,7 +105,7 @@ const UpdateMyPet = () => {
             <input
               type="text"
               {...register("name", { required: "Name is required" })}
-              className="input input-bordered w-full dark:bg-gray-800 dark:text-white"
+              className="input input-bordered border rounded-2xl p-2 w-full dark:bg-gray-800 dark:text-white"
             />
             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
           </div>
@@ -116,7 +116,7 @@ const UpdateMyPet = () => {
             <input
               type="number"
               {...register("age", { required: "Age is required", min: 0 })}
-              className="input input-bordered w-full dark:bg-gray-800 dark:text-white"
+              className="input input-bordered border rounded-2xl p-2 w-full dark:bg-gray-800 dark:text-white"
             />
             {errors.age && <p className="text-red-500 text-sm">{errors.age.message}</p>}
           </div>
@@ -126,7 +126,7 @@ const UpdateMyPet = () => {
             <label className="block mb-1 font-medium dark:text-white">Category</label>
             <select
               {...register("category", { required: "Category is required" })}
-              className="select select-bordered w-full dark:bg-gray-800 dark:text-white"
+              className="select select-bordered border rounded-2xl p-2 w-full dark:bg-gray-800 dark:text-white"
             >
               <option value="">Select Category</option>
               {categories.map((cat) => (
@@ -144,7 +144,7 @@ const UpdateMyPet = () => {
             <input
               type="text"
               {...register("location", { required: "Location is required" })}
-              className="input input-bordered w-full dark:bg-gray-800 dark:text-white"
+              className="input input-bordered w-full border rounded-2xl p-2 dark:bg-gray-800 dark:text-white"
             />
             {errors.location && <p className="text-red-500 text-sm">{errors.location.message}</p>}
           </div>
@@ -157,7 +157,7 @@ const UpdateMyPet = () => {
               {...register("shortDescription", {
                 required: "Short description is required",
               })}
-              className="input input-bordered w-full dark:bg-gray-800 dark:text-white"
+              className="input input-bordered w-full border rounded-2xl p-2 dark:bg-gray-800 dark:text-white"
             />
             {errors.shortDescription && (
               <p className="text-red-500 text-sm">{errors.shortDescription.message}</p>
@@ -172,7 +172,7 @@ const UpdateMyPet = () => {
               {...register("longDescription", {
                 required: "Long description is required",
               })}
-              className="textarea textarea-bordered w-full dark:bg-gray-800 dark:text-white"
+              className="textarea textarea-bordered w-full border rounded-2xl p-2 dark:bg-gray-800 dark:text-white"
             />
             {errors.longDescription && (
               <p className="text-red-500 text-sm">{errors.longDescription.message}</p>
@@ -183,7 +183,7 @@ const UpdateMyPet = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn btn-primary w-full dark:btn-secondary"
+            className="btn hover:bg-green-500 bg-amber-300 w-full p-3 rounded-2xl text-blue-600"
           >
             {isSubmitting ? "Updating..." : "Update Pet"}
           </button>
