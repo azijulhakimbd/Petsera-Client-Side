@@ -1,21 +1,19 @@
 import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-
-
 import Skeleton from "react-loading-skeleton";
 import { AuthContext } from "../../Context/AuthContext";
-import useAdmin from "../../Hooks/useAdmin";
+import useUserRole from "../../Hooks/useUserRole";
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   const location = useLocation();
-  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
+  const { role, roleLoading } = useUserRole();
 
-  if (loading || isAdminLoading) {
+  if (loading || roleLoading) {
     return <div className="p-10"><Skeleton height={60} count={3} /></div>;
   }
 
-  if (user && isAdmin) {
+  if (user && role === "admin") {
     return children;
   }
 
