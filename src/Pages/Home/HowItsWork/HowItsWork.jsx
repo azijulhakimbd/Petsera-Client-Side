@@ -40,7 +40,7 @@ const HowItsWork = () => {
   return (
     <section className="max-w-7xl mx-auto px-6 py-16">
       {/* Title */}
-      <h2 className="text-3xl font-semibold text-center mb-16 text-gray-800 dark:text-white">
+      <h2 className="text-3xl fredoka font-semibold text-center mb-16 text-gray-800 dark:text-white">
         <span className="inline-block border-b-2 border-pink-500 pb-1">
           {loading ? <Skeleton width={200} /> : "HOW IT WORKS?"}
         </span>
@@ -78,10 +78,10 @@ const HowItsWork = () => {
 
             {/* Text Content */}
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+              <h3 className="text-lg font-semibold Poppins text-gray-800  dark:text-white">
                 {loading ? <Skeleton width={180} /> : step.title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+              <p className="text-gray-600 inter dark:text-gray-400 mt-2 text-sm">
                 {loading ? <Skeleton count={2} /> : step.description}
               </p>
             </div>

@@ -9,38 +9,38 @@ const Footer = () => {
 
         {/* Logo and About */}
         <div>
-          <h2 className="text-2xl font-bold text-pink-600 mb-3">Petsera 🐾</h2>
-          <p className="text-sm">
+          <h2 className="text-2xl font-bold fredoka text-pink-600 mb-3">Petsera 🐾</h2>
+          <p className="text-sm inter">
             Petsera connects loving humans with pets in need. Adopt, donate, or help us build a better world—one paw at a time.
           </p>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
+          <h3 className="text-lg Poppins font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/" className="hover:text-pink-600 transition">Home</Link></li>
-            <li><Link to="/adopt" className="hover:text-pink-600 transition">Adopt a Pet</Link></li>
-            <li><Link to="/donate" className="hover:text-pink-600 transition">Donate</Link></li>
-            <li><Link to="/about" className="hover:text-pink-600 transition">About Us</Link></li>
-            <li><Link to="/contact" className="hover:text-pink-600 transition">Contact</Link></li>
+            <li><Link to="/" className="hover:text-pink-600 transition inter">Home</Link></li>
+            <li><Link to="/pets" className="hover:text-pink-600 transition inter">Adopt a Pet</Link></li>
+            <li><Link to="/donate" className="hover:text-pink-600 transition inter">Donate</Link></li>
+            <li><Link to="/volunteer" className="hover:text-pink-600 transition inter">Volunteer</Link></li>
+            <li><Link to="/contact" className="hover:text-pink-600 transition inter">Contact</Link></li>
           </ul>
         </div>
 
         {/* Contact Info */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Contact</h3>
+          <h3 className="text-lg Poppins font-semibold mb-3">Contact</h3>
           <ul className="space-y-2 text-sm">
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 inter">
               <FaMapMarkerAlt className="text-pink-500" />
               Dhaka, Bangladesh
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 inter">
               <FaPhone className="text-pink-500" />
               +880 1234-567890
             </li>
-            <li className="flex items-center gap-2">
-              <FaEnvelope className="text-pink-500" />
+            <li className="flex items-center gap-2 inter">
+              <FaEnvelope className="text-pink-500 inter" />
               support@petsera.org
             </li>
           </ul>
@@ -48,17 +48,17 @@ const Footer = () => {
 
         {/* Social Media */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
+          <h3 className="text-lg font-semibold mb-3 Poppins">Follow Us</h3>
           <div className="flex gap-4 text-xl">
-            <a href="https://www.facebook.com/azijulhakimbd" className="text-blue-600 hover:text-blue-800"><FaFacebookF /></a>
-            <a href="https://www.instagram.com/azijulhakimbd" className="text-pink-600 hover:text-pink-800"><FaInstagram /></a>
-            <a href="https://www.x.com/azijulhakimbd" className="text-sky-500 hover:text-sky-700"><FaTwitter /></a>
+            <a href="https://www.facebook.com/azijulhakimbd" className="text-blue-600 inter hover:text-blue-800"><FaFacebookF /></a>
+            <a href="https://www.instagram.com/azijulhakimbd" className="text-pink-600 inter hover:text-pink-800"><FaInstagram /></a>
+            <a href="https://www.x.com/azijulhakimbd" className="text-sky-500 inter hover:text-sky-700"><FaTwitter /></a>
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="mt-10 border-t border-gray-300 dark:border-gray-700 pt-4 text-center text-sm">
+      <div className="mt-10 border-t border-gray-300 inter dark:border-gray-700 pt-4 text-center text-sm">
         <p>&copy; {new Date().getFullYear()} Petsera. All rights reserved.</p>
       </div>
     </footer>

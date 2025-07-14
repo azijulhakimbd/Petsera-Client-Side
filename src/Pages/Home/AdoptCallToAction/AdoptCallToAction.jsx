@@ -31,15 +31,15 @@ const AdoptCallToAction = () => {
             </>
           ) : (
             <>
-              <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">
+              <h2 className="text-4xl fredoka font-bold text-gray-800 dark:text-white mb-4">
                 Give Them a Home. <br /> Give Them a Life.
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
+              <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg inter">
                 Every pet deserves love, care, and a family. Adopt today and change a life forever.
                 Be the hero they’ve been waiting for.
               </p>
-              <Link to="/adopt">
-                <button className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-xl shadow-lg transition">
+              <Link to="/pets">
+                <button className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 inter rounded-xl shadow-lg transition">
                   🐾 Adopt a Pet Now
                 </button>
               </Link>

@@ -62,7 +62,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden items-center gap-4 text-pink-600 font-medium lg:flex">
+        <ul className="hidden items-center gap-4 text-pink-600 Poppins font-medium lg:flex">
           <li><Link to="/" className={linkClass("/")}><FaHome />Home</Link></li>
           <li><Link to="/pets" className={linkClass("/pets")}><FaPaw />Adopt</Link></li>
           <li><Link to="/donate" className={linkClass("/donate")}><FaHeart />Donate</Link></li>

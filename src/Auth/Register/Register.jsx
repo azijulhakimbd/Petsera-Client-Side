@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -7,13 +7,16 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import useAuth from '../../hooks/useAuth';
 import useAxios from '../../Hooks/useAxios';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import { AuthContext } from '../../Context/AuthContext';
+
+
+
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { createUser, updateUserProfile } = useAuth();
+  const { createUser, updateUserProfile } = useContext(AuthContext)
   const [profilePic, setProfilePic] = useState('');
   const [uploading, setUploading] = useState(false);
   const axiosInstance = useAxios();
@@ -49,6 +52,8 @@ const Register = () => {
     try {
       const result = await createUser(data.email, data.password);
       const user = result.user;
+      console.log(user);
+      
 
       await updateUserProfile({
         displayName: data.name,

@@ -118,7 +118,7 @@ const DonationCampaigns = () => {
 
                   <Link
                     to={`/donations/${campaign._id}`}
-                    className="btn bg-blue-500 rounded-2xl p-2 hover:bg-amber-300 btn-sm btn-primary w-full"
+                    className="btn text-white p-3 bg-yellow-500 hover:bg-green-800 rounded-2xl btn-sm btn-primary w-full"
                   >
                     View Details
                   </Link>

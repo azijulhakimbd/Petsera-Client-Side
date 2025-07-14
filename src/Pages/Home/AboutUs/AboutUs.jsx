@@ -29,16 +29,16 @@ const AboutUs = () => {
             </>
           ) : (
             <>
-              <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">
+              <h2 className="text-4xl fredoka font-bold text-gray-800 dark:text-white mb-4">
                 About Petsera
               </h2>
-              <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+              <p className="text-gray-700 dark:text-gray-300 inter text-lg mb-4">
                 Petsera is a platform built with love to connect abandoned and
                 rescued pets with kind humans who can give them a forever home.
                 Whether you're looking to adopt, donate, or volunteer — we've
                 made it simple, secure, and heartfelt.
               </p>
-              <p className="text-gray-700 dark:text-gray-300 text-lg">
+              <p className="text-gray-700 inter dark:text-gray-300 text-lg">
                 We created Petsera because every animal deserves a chance at
                 love and safety. With real-time pet listings, verified adoption
                 processes, and community-driven support, we’re making the world

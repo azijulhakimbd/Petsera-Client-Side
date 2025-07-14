@@ -41,7 +41,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "pet/:id",
-        Component: PetDetails,
+        element: <PrivateRoute>
+          <PetDetails></PetDetails>
+        </PrivateRoute>
       },
       {
         path: "donate",
@@ -51,7 +53,7 @@ export const router = createBrowserRouter([
         path: "donations/:id",
         element: (
           <Elements stripe={stripePromise}>
-            <DonationDetails />
+            <PrivateRoute><DonationDetails /></PrivateRoute>
           </Elements>
         ),
       },

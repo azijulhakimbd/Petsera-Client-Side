@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
+
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { AuthContext } from "../../Context/AuthContext";
 
 const PetDetails = () => {
   const { id } = useParams();

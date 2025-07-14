@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 
-import { auth } from "../Firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -13,6 +12,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import { auth } from "../Firebase/firebase.config";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -38,11 +38,10 @@ const AuthProvider = ({ children }) => {
   };
   // Github Signin
   const providerGit = new GithubAuthProvider();
-  const auth = getAuth();
-  const githubSignIn =()=>{
-    return signInWithPopup(auth, providerGit);
-  }
-  
+  const authG = getAuth();
+  const githubSignIn = () => {
+    return signInWithPopup(authG, providerGit);
+  };
 
   // Sign Out
   const userSignOut = () => {
@@ -71,7 +70,8 @@ const AuthProvider = ({ children }) => {
     setLoading,
     createUser,
     signIn,
-    googleSignIn,githubSignIn,
+    googleSignIn,
+    githubSignIn,
     updateUserProfile,
     userSignOut,
   };

@@ -27,7 +27,7 @@ const PetsCategory = () => {
   return (
     <section className="py-10 px-4 max-w-6xl mx-auto">
       {/* Section Title */}
-      <h2 className="text-3xl pb-1 text-center mx-auto font-bold mb-8">
+      <h2 className="text-3xl pb-1 fredoka text-center mx-auto font-bold mb-8">
         <span className="inline-block border-b-2 border-pink-500 pb-1">
           {loading ? <Skeleton width={150} height={30} /> : "Categories"}
         </span>
@@ -60,7 +60,7 @@ const PetsCategory = () => {
                 className="cursor-pointer bg-white dark:bg-gray-800 text-pink-500 border-b-2 border-yellow-500 rounded-2xl p-5 flex flex-col items-center shadow-md hover:shadow-lg transition"
               >
                 <div className="text-4xl mb-3">{cat.icon}</div>
-                <p className="text-lg font-semibold">{cat.name}</p>
+                <p className="text-lg inter font-semibold">{cat.name}</p>
               </motion.div>
             ))}
       </div>

@@ -34,7 +34,7 @@ const MyDonationCampaigns = () => {
 
   const pauseMutation = useMutation({
     mutationFn: async ({ id, paused }) => {
-      const res = await axiosSecure.patch(`/api/donations/pause/${id}`, { paused });
+      const res = await axiosSecure.patch(`/donations/pause/${id}`, { paused });
       return res.data;
     },
     onSuccess: () => {
