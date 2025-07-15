@@ -1,32 +1,40 @@
-import { useEffect } from "react";
+// useAxiosSecure.js
 import axios from "axios";
-import useAuth from "./useAuth";
+import { getAuth } from "firebase/auth";
 
 const axiosSecure = axios.create({
   baseURL: `http://localhost:3000`,
 });
 
+axiosSecure.interceptors.request.use(
+  async (config) => {
+    const storedToken = localStorage.getItem("access-token");
+    if (storedToken) {
+      config.headers.Authorization = `Bearer ${storedToken}`;
+      return config;
+    }
+
+   
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      const token = await user.getIdToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+        
+        localStorage.setItem("access-token", token);
+      }
+    } else {
+      delete config.headers.Authorization;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 const useAxiosSecure = () => {
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const token = user?.accessToken || localStorage.getItem("access-token");
-
-    const requestInterceptor = axiosSecure.interceptors.request.use(
-      (config) => {
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
-    return () => {
-      axiosSecure.interceptors.request.eject(requestInterceptor);
-    };
-  }, [user]);
-
   return axiosSecure;
 };
 
