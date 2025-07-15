@@ -117,9 +117,9 @@ const DashboardLayout = () => {
                 bg: "pink",
               },
               {
-                to: "/dashboard/users",
+                to: "/dashboard/all-users",
                 icon: <FaUsers className="text-pink-600 dark:text-pink-400" size={24} />,
-                label: "Users",
+                label: "All Users",
                 bg: "pink",
               },
               {

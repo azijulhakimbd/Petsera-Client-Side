@@ -26,6 +26,7 @@ import AccessDenied from "../Pages/AdminDashboard/AccessDenied/AccessDenied";
 import AllUsers from "../Pages/AdminDashboard/AllUsers/AllUsers";
 import DashboardHome from "../Layout/DashboardLayout/DashboardHome";
 import UpdateDonationsCampaign from "../Pages/UserDashboard/MyDonationCampaigns/EditDonationsCampaign";
+import AllDonations from "../Pages/AdminDashboard/AllDonations/AllDonations";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
@@ -157,14 +158,16 @@ export const router = createBrowserRouter([
           </AdminRoute>
       },
       {
-        path:'users',
+        path:'all-users',
         element: <AdminRoute>
           <AllUsers></AllUsers>
         </AdminRoute>
       },
       {
         path:'all-donations',
-        
+        element:<AdminRoute>
+          <AllDonations></AllDonations>
+        </AdminRoute>
        
       }
     ],
