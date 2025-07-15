@@ -39,6 +39,11 @@ const DonationDetails = () => {
 
     if (!stripe || !elements) return;
 
+    if (campaign.paused) {
+      Swal.fire("Paused", "This campaign is currently paused. Donations are not accepted.", "warning");
+      return;
+    }
+
     const amount = parseFloat(donationAmount.trim());
     const remainingAmount = campaign.maxAmount - (campaign.totalDonated || 0);
 
@@ -109,7 +114,11 @@ const DonationDetails = () => {
   return (
     <section className="max-w-4xl mx-auto px-4 py-25">
       <h2 className="text-3xl font-bold mb-4">{campaign.petName}</h2>
-      <img src={campaign.image} alt={campaign.petName} className="w-full h-80 object-cover rounded-lg mb-6" />
+      <img
+        src={campaign.image}
+        alt={campaign.petName}
+        className="w-full h-80 object-cover rounded-lg mb-6"
+      />
 
       <p className="mb-2 text-gray-700 dark:text-gray-300">
         <strong>Maximum Amount:</strong> ${campaign.maxAmount.toFixed(2)}
@@ -126,10 +135,15 @@ const DonationDetails = () => {
       <p className="mb-4">{campaign.longDescription}</p>
 
       <button
-        className="btn rounded-2xl p-3 text-white bg-yellow-500 hover:bg-green-800 mx-auto btn-primary"
-        onClick={() => setModalOpen(true)}
+        className={`btn rounded-2xl p-3 text-white mx-auto btn-primary ${
+          campaign.paused
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-yellow-500 hover:bg-green-800"
+        }`}
+        onClick={() => !campaign.paused && setModalOpen(true)}
+        disabled={campaign.paused}
       >
-        Donate Now
+        {campaign.paused ? "Campaign Paused" : "Donate Now"}
       </button>
 
       {/* Modal */}
@@ -140,9 +154,17 @@ const DonationDetails = () => {
         overlayClassName="fixed inset-0 bg-background/80 backdrop-blur-md shadow-sm p-20 flex items-start justify-center"
       >
         <h3 className="text-xl font-semibold mb-4">Make a Donation</h3>
+
+        {campaign.paused && (
+          <p className="text-red-600 font-semibold mb-4 text-center">
+            This campaign is currently paused. Donations are not accepted.
+          </p>
+        )}
+
         <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
           You can donate up to <strong>${remainingAmount}</strong>
         </p>
+
         <form onSubmit={handleDonate} className="space-y-4">
           <input
             type="number"
@@ -153,12 +175,24 @@ const DonationDetails = () => {
             min="0.01"
             max={remainingAmount}
             step="0.01"
+            disabled={campaign.paused}
           />
-          <CardElement className="p-3 border rounded-md dark:bg-gray-900" />
+          <CardElement
+            className="p-3 border rounded-md dark:bg-gray-900"
+            options={{ disabled: campaign.paused }}
+          />
           <button
             type="submit"
-            className="btn rounded-2xl text-white p-3 bg-yellow-500 hover:bg-green-800 mx-auto mt-4"
-            disabled={!donationAmount || parseFloat(donationAmount) <= 0}
+            className={`btn rounded-2xl text-white p-3 mx-auto mt-4 ${
+              campaign.paused
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-yellow-500 hover:bg-green-800"
+            }`}
+            disabled={
+              !donationAmount ||
+              parseFloat(donationAmount) <= 0 ||
+              campaign.paused
+            }
           >
             Submit Donation
           </button>

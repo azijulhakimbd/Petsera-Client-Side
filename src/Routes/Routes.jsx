@@ -25,6 +25,7 @@ import AllPets from "../Pages/AdminDashboard/AllPets/AllPets";
 import AccessDenied from "../Pages/AdminDashboard/AccessDenied/AccessDenied";
 import AllUsers from "../Pages/AdminDashboard/AllUsers/AllUsers";
 import DashboardHome from "../Layout/DashboardLayout/DashboardHome";
+import UpdateDonationsCampaign from "../Pages/UserDashboard/MyDonationCampaigns/EditDonationsCampaign";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
@@ -140,6 +141,12 @@ export const router = createBrowserRouter([
             <MyDonations></MyDonations>
           </PrivateRoute>
         ),
+      },
+      {
+        path:'edit-donation/:id',
+        element:<PrivateRoute>
+          <UpdateDonationsCampaign></UpdateDonationsCampaign>
+        </PrivateRoute>
       },
       // Admin Route
       {

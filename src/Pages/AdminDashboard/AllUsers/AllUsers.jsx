@@ -1,17 +1,16 @@
+
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { FaUserShield, FaBan } from "react-icons/fa";
-import Swal from "sweetalert2";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import { FaShieldAlt, FaBan } from "react-icons/fa";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
-  // Fetch all users
   const { data: users = [], isLoading } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
@@ -20,108 +19,97 @@ const AllUsers = () => {
     },
   });
 
-  // Make Admin Mutation
   const makeAdminMutation = useMutation({
-    mutationFn: async (id) => await axiosSecure.patch(`/users/admin/${id}`),
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/users/admin/${id}`);
+      return res.data;
+    },
     onSuccess: () => {
-      Swal.fire("Success", "User promoted to admin", "success");
       queryClient.invalidateQueries(["allUsers"]);
+      Swal.fire("Success!", "User has been made admin.", "success");
     },
   });
 
-  // Ban User Mutation
   const banUserMutation = useMutation({
-    mutationFn: async (id) => await axiosSecure.patch(`/users/ban/${id}`),
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/users/ban/${id}`);
+      return res.data;
+    },
     onSuccess: () => {
-      Swal.fire("User Banned", "The user can no longer log in.", "warning");
       queryClient.invalidateQueries(["allUsers"]);
+      Swal.fire("Banned!", "User has been banned.", "warning");
     },
   });
+
+  if (isLoading) {
+    return <Skeleton count={5} height={40} className="my-2" />;
+  }
 
   return (
-    <motion.div
-      className="overflow-x-auto p-6"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-    >
+    <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">All Users</h2>
-
-      <table className="min-w-full table-auto rounded">
-        <thead className="bg-pink-100 dark:bg-pink-900 text-left">
-          <tr>
-            <th className="p-3">Profile</th>
-            <th className="p-3">Name</th>
-            <th className="p-3">Email</th>
-            <th className="p-3">Role</th>
-            <th className="p-3">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {isLoading
-            ? Array.from({ length: 5 }).map((_, index) => (
-                <tr key={index} className="border-t dark:border-gray-700">
-                  <td className="p-3">
-                    <Skeleton circle width={40} height={40} />
-                  </td>
-                  <td className="p-3">
-                    <Skeleton width={100} />
-                  </td>
-                  <td className="p-3">
-                    <Skeleton width={150} />
-                  </td>
-                  <td className="p-3">
-                    <Skeleton width={70} />
-                  </td>
-                  <td className="p-3">
-                    <Skeleton width={120} height={30} />
-                  </td>
-                </tr>
-              ))
-            : users.map((user) => (
-                <motion.tr
-                  key={user._id}
-                  className="border-t dark:border-gray-700 hover:bg-pink-50 dark:hover:bg-gray-800"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <td className="p-3">
-                    <img
-                      src={user.photoURL}
-                      alt={user.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                  </td>
-                  <td className="p-3">{user.name}</td>
-                  <td className="p-3">{user.email}</td>
-                  <td className="p-3 capitalize">{user.role}</td>
-                  <td className="p-3 flex flex-wrap gap-2">
-                    {user.role !== "admin" && (
-                      <button
-                        onClick={() => makeAdminMutation.mutate(user._id)}
-                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded flex items-center gap-1"
-                      >
-                        <FaUserShield /> Make Admin
-                      </button>
-                    )}
-                    {user.status !== "banned" && (
-                      <button
-                        onClick={() => banUserMutation.mutate(user._id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded flex items-center gap-1"
-                      >
-                        <FaBan /> Ban
-                      </button>
-                    )}
-                    {user.status === "banned" && (
-                      <span className="text-red-500 font-semibold">Banned</span>
-                    )}
-                  </td>
-                </motion.tr>
-              ))}
-        </tbody>
-      </table>
-    </motion.div>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead className="bg-base-200">
+            <tr>
+              <th>#</th>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th className="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, idx) => (
+              <tr key={user._id}>
+                <td>{idx + 1}</td>
+                <td>
+                  <img
+                    src={user.photoURL || "/default-avatar.png"}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                </td>
+                <td>{user.name || "Unknown"}</td>
+                <td>{user.email}</td>
+                <td>
+                  <span className={`badge ${user.role === "admin" ? "badge-success" : "badge-ghost"}`}>
+                    {user.role}
+                  </span>
+                </td>
+                <td>
+                  {user.status === "banned" ? (
+                    <span className="badge badge-error">Banned</span>
+                  ) : (
+                    <span className="badge badge-info">Active</span>
+                  )}
+                </td>
+                <td className="space-x-2 text-center">
+                  {user.role !== "admin" && (
+                    <button
+                      onClick={() => makeAdminMutation.mutate(user._id)}
+                      className="btn btn-xs btn-outline btn-success"
+                    >
+                      <FaShieldAlt className="mr-1" /> Make Admin
+                    </button>
+                  )}
+                  {user.status !== "banned" && (
+                    <button
+                      onClick={() => banUserMutation.mutate(user._id)}
+                      className="btn btn-xs btn-outline btn-error"
+                    >
+                      <FaBan className="mr-1" /> Ban
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 

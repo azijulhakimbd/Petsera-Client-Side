@@ -1,11 +1,12 @@
-import React from "react";
+import React, { use } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
-import useAuth from "../../hooks/useAuth";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import { AuthContext } from "../../Context/AuthContext";
+
 
 const SocialLogin = () => {
-  const { googleSignIn,githubSignIn } = useAuth();
+  const { googleSignIn,githubSignIn } = use(AuthContext)
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from || "/";
