@@ -1,148 +1,226 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../../Context/AuthContext";
-import { FaEdit, FaTrash, FaToggleOn, FaToggleOff } from "react-icons/fa";
-import { useNavigate } from "react-router";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { motion } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaEdit,
+  FaTrash,
+  FaCheck,
+  FaTimes,
+} from "react-icons/fa";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AllPets = () => {
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
-  const { data: pets = [], isLoading } = useQuery({
+  const { data: pets = [], isLoading, error } = useQuery({
     queryKey: ["allPets"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/pets");
+      const res = await axiosSecure.get("/pets/all");
       return res.data;
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const res = await axiosSecure.delete(`/pets/${id}`);
-      return res.data;
-    },
+  const deletePetMutation = useMutation({
+    mutationFn: (id) => axiosSecure.delete(`/pets/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries(["allPets"]);
       Swal.fire("Deleted!", "Pet has been deleted.", "success");
     },
+    onError: () => {
+      Swal.fire("Error", "Failed to delete pet.", "error");
+    },
   });
 
-  const statusMutation = useMutation({
-    mutationFn: async ({ id, status }) => {
-      const res = await axiosSecure.patch(`/pets/${id}/status`, {
-        adopted: status,
-      });
-      return res.data;
-    },
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, adopted }) =>
+      axiosSecure.patch(`/pets/${id}/status`, { adopted }),
     onSuccess: () => {
       queryClient.invalidateQueries(["allPets"]);
+      Swal.fire("Updated!", "Pet status updated.", "success");
+    },
+    onError: () => {
+      Swal.fire("Error", "Failed to update status.", "error");
     },
   });
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteMutation.mutate(id);
-      }
-    });
+  const updatePetMutation = useMutation({
+    mutationFn: ({ id, updateData }) =>
+      axiosSecure.patch(`/pets/${id}`, updateData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["allPets"]);
+      Swal.fire("Updated!", "Pet details updated.", "success");
+    },
+    onError: () => {
+      Swal.fire("Error", "Failed to update pet.", "error");
+    },
+  });
+
+  const [editingPet, setEditingPet] = useState(null);
+  const [editedName, setEditedName] = useState("");
+
+  const startEditing = (pet) => {
+    setEditingPet(pet);
+    setEditedName(pet.name);
   };
 
-  const toggleStatus = (id, currentStatus) => {
-    statusMutation.mutate({ id, status: !currentStatus });
+  const cancelEditing = () => {
+    setEditingPet(null);
+    setEditedName("");
   };
+
+  const saveEditing = () => {
+    updatePetMutation.mutate({
+      id: editingPet._id,
+      updateData: { name: editedName },
+    });
+    cancelEditing();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="p-4 max-w-7xl mx-auto space-y-2">
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} height={40} />
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <p className="text-center text-red-500 dark:text-red-400">
+        Error loading pets.
+      </p>
+    );
+  }
 
   return (
-    <motion.div
-      className="max-w-7xl mx-auto px-4 py-10"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h2 className="text-3xl font-bold mb-6">All Pets (Admin)</h2>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
+    <div className="p-4 max-w-7xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
+        All Pets (Admin)
+      </h2>
+      <div className="overflow-x-auto rounded-lg shadow-md">
+        <table className="min-w-full border border-gray-300 dark:border-gray-600">
           <thead>
-            <tr className="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-white">
-              <th>Image</th>
-              <th>Name</th>
-              <th>Owner Email</th>
-              <th>Status</th>
-              <th>Actions</th>
+            <tr className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+              <th className="p-2 border">Name</th>
+              <th className="p-2 border">Type</th>
+              <th className="p-2 border">Age</th>
+              <th className="p-2 border">Status</th>
+              <th className="p-2 border">Added By</th>
+              <th className="p-2 border">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {isLoading
-              ? Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i} className="border-b">
-                    <td><Skeleton circle width={64} height={64} /></td>
-                    <td><Skeleton width={100} /></td>
-                    <td><Skeleton width={150} /></td>
-                    <td><Skeleton width={100} /></td>
-                    <td><Skeleton width={80} /></td>
-                  </tr>
-                ))
-              : pets.map((pet) => (
-                  <motion.tr
-                    key={pet._id}
-                    className="border-b hover:bg-gray-100 dark:hover:bg-gray-900"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <td>
-                      <img
-                        src={pet.image}
-                        alt={pet.name}
-                        className="w-16 h-16 rounded"
+            <AnimatePresence>
+              {pets.map((pet) => (
+                <motion.tr
+                  key={pet._id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <td className="border p-2">
+                    {editingPet?._id === pet._id ? (
+                      <input
+                        type="text"
+                        value={editedName}
+                        onChange={(e) => setEditedName(e.target.value)}
+                        className="border px-2 py-1 rounded w-full dark:bg-gray-900 dark:text-white"
                       />
-                    </td>
-                    <td>{pet.name}</td>
-                    <td>{pet.ownerEmail}</td>
-                    <td>
-                      <button
-                        onClick={() => toggleStatus(pet._id, pet.adopted)}
-                        className={`flex items-center gap-1 ${
-                          pet.adopted ? "text-green-600" : "text-yellow-500"
-                        }`}
-                      >
-                        {pet.adopted ? <FaToggleOn /> : <FaToggleOff />}
-                        {pet.adopted ? "Adopted" : "Not Adopted"}
-                      </button>
-                    </td>
-                    <td className="space-x-2">
-                      <button
-                        className="btn btn-sm btn-warning"
-                        onClick={() =>
-                          navigate(`/dashboard/update-pet/${pet._id}`)
-                        }
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="btn btn-sm btn-error"
-                        onClick={() => handleDelete(pet._id)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </motion.tr>
-                ))}
+                    ) : (
+                      <span className="dark:text-white">{pet.name}</span>
+                    )}
+                  </td>
+                  <td className="border p-2 dark:text-white">{pet.type}</td>
+                  <td className="border p-2 dark:text-white">{pet.age}</td>
+                  <td className="border p-2">
+                    {pet.adopted ? (
+                      <span className="text-green-600 font-semibold">Adopted</span>
+                    ) : (
+                      <span className="text-red-600 font-semibold">Available</span>
+                    )}
+                  </td>
+                  <td className="border p-2 dark:text-white">
+                    {pet.addedBy}
+                  </td>
+                  <td className="border p-2 flex gap-2 justify-center">
+                    {editingPet?._id === pet._id ? (
+                      <>
+                        <button
+                          onClick={saveEditing}
+                          className="text-green-600 hover:text-green-800"
+                          title="Save"
+                        >
+                          <FaCheck />
+                        </button>
+                        <button
+                          onClick={cancelEditing}
+                          className="text-red-600 hover:text-red-800"
+                          title="Cancel"
+                        >
+                          <FaTimes />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => startEditing(pet)}
+                          className="text-blue-600 hover:text-blue-800"
+                          title="Edit"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          onClick={() =>
+                            Swal.fire({
+                              title: "Are you sure?",
+                              text: "This will delete the pet permanently!",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonText: "Yes, delete it!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                deletePetMutation.mutate(pet._id);
+                              }
+                            })
+                          }
+                          className="text-red-600 hover:text-red-800"
+                          title="Delete"
+                        >
+                          <FaTrash />
+                        </button>
+                        <button
+                          onClick={() =>
+                            updateStatusMutation.mutate({
+                              id: pet._id,
+                              adopted: !pet.adopted,
+                            })
+                          }
+                          className={`${
+                            pet.adopted
+                              ? "text-yellow-600"
+                              : "text-green-600"
+                          } hover:text-yellow-800`}
+                          title={pet.adopted ? "Mark as Not Adopted" : "Mark as Adopted"}
+                        >
+                          {pet.adopted ? <FaTimes /> : <FaCheck />}
+                        </button>
+                      </>
+                    )}
+                  </td>
+                </motion.tr>
+              ))}
+            </AnimatePresence>
           </tbody>
         </table>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

@@ -14,7 +14,6 @@ axiosSecure.interceptors.request.use(
       return config;
     }
 
-   
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -22,7 +21,7 @@ axiosSecure.interceptors.request.use(
       const token = await user.getIdToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        
+
         localStorage.setItem("access-token", token);
       }
     } else {

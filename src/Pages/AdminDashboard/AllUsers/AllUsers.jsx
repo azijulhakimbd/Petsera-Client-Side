@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Swal from "sweetalert2";
-import { FaShieldAlt, FaBan } from "react-icons/fa";
+import { FaShieldAlt, FaBan, FaUndo } from "react-icons/fa";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const AllUsers = () => {
@@ -41,6 +41,24 @@ const AllUsers = () => {
     },
   });
 
+  const unbanUserMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch(`/users/unban/${id}`);
+      return res.data;
+    },
+    onSuccess: (data, id) => {
+      // ক্যাশে লোকালি আপডেট করা
+      queryClient.setQueryData(["allUsers"], (oldUsers) => {
+        if (!oldUsers) return [];
+        return oldUsers.map((user) =>
+          user._id === id ? { ...user, status: "active" } : user
+        );
+      });
+
+      Swal.fire("Success!", "User has been unbanned.", "success");
+    },
+  });
+
   if (isLoading) {
     return (
       <div className="p-4">
@@ -50,7 +68,6 @@ const AllUsers = () => {
           className="my-2 rounded-md"
           baseColor="#e2e8f0"
           highlightColor="#f8fafc"
-          // automatically adapts to dark mode if your tailwind config enables it
         />
       </div>
     );
@@ -129,7 +146,8 @@ const AllUsers = () => {
                         <FaShieldAlt className="mr-1" /> Make Admin
                       </button>
                     )}
-                    {user.status !== "banned" && (
+
+                    {user.status !== "banned" ? (
                       <button
                         onClick={() => banUserMutation.mutate(user._id)}
                         className="inline-flex items-center bg-yellow-600 btn rounded-2xl p-2 btn-xs btn-outline btn-error hover:bg-red-600 hover:text-white dark:hover:bg-red-500"
@@ -137,6 +155,28 @@ const AllUsers = () => {
                         aria-label={`Ban ${user.name}`}
                       >
                         <FaBan className="mr-1" /> Ban
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          Swal.fire({
+                            title: `Unban ${user.name}?`,
+                            text: "Are you sure you want to unban this user?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Yes, unban",
+                            cancelButtonText: "Cancel",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              unbanUserMutation.mutate(user._id);
+                            }
+                          });
+                        }}
+                        className="inline-flex items-center bg-blue-600 btn rounded-2xl p-2 btn-xs btn-outline hover:bg-blue-400 hover:text-white dark:hover:bg-blue-500"
+                        disabled={unbanUserMutation.isLoading}
+                        aria-label={`Unban ${user.name}`}
+                      >
+                        <FaUndo className="mr-1" /> Unban
                       </button>
                     )}
                   </td>
