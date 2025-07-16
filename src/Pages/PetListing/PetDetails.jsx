@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
+import { FaBirthdayCake, FaMapMarkerAlt, FaTag, FaFileAlt, FaPaw, FaPhone, FaHome, FaTimes } from "react-icons/fa";
+import { IoPerson } from "react-icons/io5";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { AuthContext } from "../../Context/AuthContext";
 
@@ -41,7 +42,6 @@ const PetDetails = () => {
 
     try {
       const res = await axiosSecure.post("/adoptions", adoptionData);
-
       if (res.status === 201) {
         Swal.fire("Success", "Adoption request submitted!", "success");
         setShowModal(false);
@@ -66,19 +66,29 @@ const PetDetails = () => {
           transition={{ duration: 0.5 }}
         >
           <img src={pet.image} alt={pet.name} className="w-full h-80 object-cover" />
-          <div className="p-6">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-              {pet.name}
+          <div className="p-6 space-y-2">
+            <h2 className="text-3xl fredoka font-bold text-gray-800 dark:text-white flex items-center gap-2">
+              <FaPaw className="text-blue-500" /> {pet.name}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">{pet.longDescription}</p>
-            <p className="text-gray-600 dark:text-gray-300">Age: {pet.age} Years</p>
-            <p className="text-gray-600 dark:text-gray-300">Category: {pet.category}</p>
-            <p className="text-gray-600 dark:text-gray-300">Location: {pet.location}</p>
-            <p className="mt-4 text-gray-700 dark:text-gray-200">{pet.description}</p>
+            <p className="text-gray-600 lato dark:text-gray-300 flex items-center gap-2">
+              <FaFileAlt className="text-gray-500" /> {pet.longDescription}
+            </p>
+            <p className="text-gray-600 lato dark:text-gray-300 flex items-center gap-2">
+              <FaBirthdayCake className="text-pink-500" /> Age: {pet.age} Years
+            </p>
+            <p className="text-gray-600 lato dark:text-gray-300 flex items-center gap-2">
+              <FaTag className="text-green-500" /> Category: {pet.category}
+            </p>
+            <p className="text-gray-600 lato dark:text-gray-300 flex items-center gap-2">
+              <FaMapMarkerAlt className="text-red-500" /> Location: {pet.location}
+            </p>
+            
+          
+            <p className="mt-4 text-gray-700 lato flex items-center gap-2 dark:text-gray-200"><IoPerson className="text-red-500" />{pet.addedBy}</p>
 
             <button
               onClick={() => setShowModal(true)}
-              className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              className="mt-6 px-6 py-2 bg-blue-600 hover:bg-blue-700 fredoka text-white rounded-lg"
             >
               Adopt
             </button>
@@ -109,65 +119,65 @@ const PetDetails = () => {
               className="bg-white dark:bg-gray-900 p-6 rounded-lg w-full max-w-md relative"
             >
               <button
-                className="absolute top-2 right-3 text-2xl"
+                className="absolute top-2 right-3 text-xl text-gray-700 dark:text-white hover:text-red-600"
                 onClick={() => setShowModal(false)}
               >
-                ✕
+                <FaTimes />
               </button>
               <h3 className="text-xl font-bold mb-4">Adopt: {pet?.name}</h3>
               <form onSubmit={handleAdopt} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm fredoka font-medium text-gray-700 dark:text-gray-300">
                     Name
                   </label>
                   <input
                     type="text"
                     value={user?.displayName}
                     disabled
-                    className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 fredoka rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm fredoka font-medium text-gray-700 dark:text-gray-300">
                     Email
                   </label>
                   <input
                     type="email"
                     value={user?.email || ""}
                     disabled
-                    className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 fredoka rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Phone Number
+                  <label className="block text-sm fredoka font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                    <FaPhone /> Phone Number
                   </label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 rounded fredoka border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Address
+                  <label className="block text-sm font-medium fredoka text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                    <FaHome /> Address
                   </label>
                   <textarea
                     required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    className="w-full px-4 py-2 rounded border fredoka border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold"
+                  className="w-full bg-green-600 fredoka hover:bg-green-700 text-white py-2 rounded-lg font-semibold"
                 >
                   Submit Adoption Request
                 </button>

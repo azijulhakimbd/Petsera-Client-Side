@@ -46,10 +46,10 @@ const Contact = () => {
       >
         {/* Contact Info */}
         <div className="space-y-8">
-          <h1 className="text-4xl font-bold text-pink-600 dark:text-pink-400">
+          <h1 className="text-4xl fredoka font-bold text-pink-600 dark:text-pink-400">
             Contact Us
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-gray-600 inter dark:text-gray-300">
             Have questions, suggestions, or want to volunteer? Reach out — we
             love hearing from you!
           </p>
@@ -57,11 +57,11 @@ const Contact = () => {
           <div className="space-y-6 text-lg">
             <div className="flex items-center gap-4">
               <FaMapMarkerAlt className="text-pink-500 text-2xl" />
-              <span>Petsera HQ, Dhanmondi, Dhaka, Bangladesh</span>
+              <span className="inter">Petsera HQ, Dhanmondi, Dhaka, Bangladesh</span>
             </div>
             <div className="flex items-center gap-4">
               <FaPhoneAlt className="text-pink-500 text-2xl" />
-              <a href="tel:+8801234567890" className="hover:underline">
+              <a href="tel:+8801234567890" className="hover:underline inter">
                 +880 1234 567890
               </a>
             </div>
@@ -69,7 +69,7 @@ const Contact = () => {
               <FaEnvelope className="text-pink-500 text-2xl" />
               <a
                 href="mailto:contact@petsera.org"
-                className="hover:underline break-all"
+                className="hover:underline inter break-all"
               >
                 contact@petsera.org
               </a>
@@ -96,12 +96,12 @@ const Contact = () => {
           noValidate
         >
           <label className="flex flex-col">
-            <span className="mb-1 font-semibold">Name *</span>
+            <span className="mb-1 fredoka font-semibold">Name *</span>
             <input
               type="text"
               placeholder="Your full name"
               {...register("name", { required: "Name is required" })}
-              className={`rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:border-gray-600 ${
+              className={`rounded-md border fredoka px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:border-gray-600 ${
                 errors.name ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -113,7 +113,7 @@ const Contact = () => {
           </label>
 
           <label className="flex flex-col">
-            <span className="mb-1 font-semibold">Email *</span>
+            <span className="mb-1 fredoka font-semibold">Email *</span>
             <input
               type="email"
               placeholder="Your email address"
@@ -125,7 +125,7 @@ const Contact = () => {
                   message: "Invalid email address",
                 },
               })}
-              className={`rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:border-gray-600 ${
+              className={`rounded-md border px-4 py-2 fredoka focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:border-gray-600 ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -137,12 +137,12 @@ const Contact = () => {
           </label>
 
           <label className="flex flex-col">
-            <span className="mb-1 font-semibold">Message *</span>
+            <span className="mb-1 fredoka font-semibold">Message *</span>
             <textarea
               rows="5"
               placeholder="Write your message here..."
               {...register("message", { required: "Message is required" })}
-              className={`rounded-md border px-4 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:border-gray-600 ${
+              className={`rounded-md fredoka border px-4 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:border-gray-600 ${
                 errors.message ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -156,7 +156,7 @@ const Contact = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="bg-pink-600 text-white font-semibold py-3 rounded-lg hover:bg-pink-700 transition disabled:opacity-70"
+            className="bg-pink-600 fredoka text-white font-semibold py-3 rounded-lg hover:bg-pink-700 transition disabled:opacity-70"
           >
             {isSubmitting ? "Sending..." : "Send Message"}
           </button>

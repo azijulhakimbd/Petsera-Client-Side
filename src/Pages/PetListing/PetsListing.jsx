@@ -3,20 +3,23 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 import { motion } from "framer-motion";
+import { FaMapMarkerAlt, FaBirthdayCake, FaPaw } from "react-icons/fa";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
-const fetchPets = async ({ pageParam = 1, queryKey }) => {
-  const [_key, search, category] = queryKey;
-  const res = await fetch(
-    `http://localhost:3000/pets-list?search=${search}&category=${category}&page=${pageParam}&limit=6`
-  );
-  return res.json();
-};
 
 const PetListing = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+  const axiosSecure = useAxiosSecure();
+
+  const fetchPets = async ({ pageParam = 1 }) => {
+    const res = await axiosSecure.get(
+      `/pets-list?search=${search}&category=${category}&page=${pageParam}&limit=6`
+    );
+    return res.data;
+  };
 
   const {
     data,
@@ -48,9 +51,10 @@ const PetListing = () => {
   const loadingSkeletons = Array(6).fill(0);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-10">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-        🐾 Available Pets for Adoption
+    <section className="max-w-7xl mx-auto px-4 py-25">
+      <h2 className="text-2xl md:text-3xl font-bold Poppins text-center mb-8 text-gray-800 dark:text-white flex items-center justify-center gap-2">
+        <FaPaw className="text-blue-600" />
+        Available Pets for Adoption
       </h2>
 
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
@@ -59,12 +63,12 @@ const PetListing = () => {
           placeholder="Search by pet name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full sm:w-1/2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
+          className="w-full Poppins sm:w-1/2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full sm:w-1/4 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
+          className="w-full sm:w-1/4 px-4 py-2 Poppins rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white"
         >
           <option value="">All Categories</option>
           <option value="Dog">Dog</option>
@@ -97,18 +101,18 @@ const PetListing = () => {
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-4">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-xl Poppins font-semibold text-gray-900 dark:text-white">
                       {pet.name}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Age: {pet.age} Years
+                    <p className="text-sm text-gray-600 inter dark:text-gray-400 flex items-center gap-1">
+                      <FaBirthdayCake className="text-pink-500" /> Age: {pet.age} {pet.age === 1 ? "Year" : "Years"}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Location: {pet.location}
+                    <p className="text-sm text-gray-600 inter dark:text-gray-400 flex items-center gap-1">
+                      <FaMapMarkerAlt className="text-red-500" /> Location: {pet.location}
                     </p>
                     <Link
                       to={`/pet/${pet._id}`}
-                      className="inline-block mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg"
+                      className="inline-block mt-3 Poppins px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg"
                     >
                       View Details
                     </Link>
@@ -125,7 +129,7 @@ const PetListing = () => {
       </div>
 
       {!isFetching && !data?.pages[0]?.data.length && (
-        <p className="text-center text-gray-600 dark:text-gray-300 mt-10">
+        <p className="text-center text-gray-600 inter dark:text-gray-300 mt-10">
           No pets found.
         </p>
       )}

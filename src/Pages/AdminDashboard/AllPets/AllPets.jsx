@@ -19,7 +19,7 @@ const AllPets = () => {
   const { data: pets = [], isLoading, error } = useQuery({
     queryKey: ["allPets"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/pets/all");
+      const res = await axiosSecure.get(`/pets/all`);
       return res.data;
     },
   });

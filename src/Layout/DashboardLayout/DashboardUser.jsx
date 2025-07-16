@@ -63,7 +63,7 @@ const DashboardUser = () => {
               alt="Petsera logo"
               className="w-16"
             />
-            <span className="hidden sm:block text-xl font-bold text-primary dark:text-primary-light">
+            <span className="hidden fredoka sm:block text-xl font-bold text-primary dark:text-primary-light">
               Petsera
             </span>
           </Link>
@@ -81,7 +81,7 @@ const DashboardUser = () => {
             <NavLink
               to="/dashboard/add-pet"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded hover:bg-blue-100 dark:hover:bg-blue-900 ${
+                `flex items-center gap-2 px-4 py-2 fredoka rounded hover:bg-blue-100 dark:hover:bg-blue-900 ${
                   isActive
                     ? "bg-blue-200 dark:bg-blue-700 font-semibold"
                     : "dark:text-gray-300 text-gray-800"
@@ -90,14 +90,14 @@ const DashboardUser = () => {
             >
               <FaPlusCircle
                 size={24}
-                className="text-blue-600 dark:text-blue-400"
+                className="text-blue-600 fredoka dark:text-blue-400"
               />
               Add a Pet
             </NavLink>
             <NavLink
               to="/dashboard/my-pets"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded hover:bg-green-100 dark:hover:bg-green-900 ${
+                `flex items-center gap-2 px-4 py-2 fredoka rounded hover:bg-green-100 dark:hover:bg-green-900 ${
                   isActive
                     ? "bg-green-200 dark:bg-green-700 font-semibold"
                     : "dark:text-gray-300 text-gray-800"
@@ -106,14 +106,14 @@ const DashboardUser = () => {
             >
               <FaPaw
                 size={24}
-                className="text-green-600 dark:text-green-400"
+                className="text-green-600 fredoka dark:text-green-400"
               />
               My Added Pets
             </NavLink>
             <NavLink
               to="/dashboard/adoption-requests"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded hover:bg-yellow-100 dark:hover:bg-yellow-900 ${
+                `flex items-center gap-2 px-4 py-2 fredoka rounded hover:bg-yellow-100 dark:hover:bg-yellow-900 ${
                   isActive
                     ? "bg-yellow-200 dark:bg-yellow-700 font-semibold"
                     : "dark:text-gray-300 text-gray-800"
@@ -122,14 +122,14 @@ const DashboardUser = () => {
             >
               <FaClipboardList
                 size={24}
-                className="text-yellow-600 dark:text-yellow-400"
+                className="text-yellow-600 fredoka dark:text-yellow-400"
               />
               Adoption Requests
             </NavLink>
             <NavLink
               to="/dashboard/create-campaign"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded hover:bg-purple-100 dark:hover:bg-purple-900 ${
+                `flex items-center gap-2 px-4 py-2 fredoka rounded hover:bg-purple-100 dark:hover:bg-purple-900 ${
                   isActive
                     ? "bg-purple-200 dark:bg-purple-700 font-semibold"
                     : "dark:text-gray-300 text-gray-800"
@@ -138,14 +138,14 @@ const DashboardUser = () => {
             >
               <FaDonate
                 size={24}
-                className="text-purple-600 dark:text-purple-400"
+                className="text-purple-600 fredoka dark:text-purple-400"
               />
               Create Donation Campaign
             </NavLink>
             <NavLink
               to="/dashboard/my-campaigns"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded hover:bg-red-100 dark:hover:bg-red-900 ${
+                `flex items-center gap-2 px-4 py-2 fredoka rounded hover:bg-red-100 dark:hover:bg-red-900 ${
                   isActive
                     ? "bg-red-200 dark:bg-red-700 font-semibold"
                     : "dark:text-gray-300 text-gray-800"
@@ -154,14 +154,14 @@ const DashboardUser = () => {
             >
               <FaHandHoldingHeart
                 size={24}
-                className="text-red-600 dark:text-red-400"
+                className="text-red-600 fredoka dark:text-red-400"
               />
               My Donation Campaigns
             </NavLink>
             <NavLink
               to="/dashboard/my-donations"
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded hover:bg-pink-100 dark:hover:bg-pink-900 ${
+                `flex items-center gap-2 px-4 py-2 fredoka rounded hover:bg-pink-100 dark:hover:bg-pink-900 ${
                   isActive
                     ? "bg-pink-200 dark:bg-pink-700 font-semibold"
                     : "dark:text-gray-300 text-gray-800"
@@ -170,7 +170,7 @@ const DashboardUser = () => {
             >
               <FaGift
                 size={24}
-                className="text-pink-600 dark:text-pink-400"
+                className="text-pink-600 fredoka dark:text-pink-400"
               />
               My Donations
             </NavLink>
@@ -206,7 +206,7 @@ const DashboardUser = () => {
             <FaBars size={24} />
           </button>
 
-          <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+          <div className="font-semibold fredoka text-lg text-gray-900 dark:text-gray-100">
             Dashboard
           </div>
 

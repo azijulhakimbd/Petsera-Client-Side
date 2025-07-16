@@ -14,7 +14,7 @@ const Volunteer = () => {
           viewport={{ once: true }}
           className="text-center space-y-4"
         >
-          <h1 className="text-4xl font-bold text-pink-600 dark:text-pink-400">
+          <h1 className="text-4xl fredoka font-bold text-pink-600 dark:text-pink-400">
             Become a Volunteer
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -52,8 +52,8 @@ const Volunteer = () => {
               className="bg-pink-50 dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md transition"
             >
               {icon}
-              <h3 className="text-xl font-semibold mb-2">{title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{desc}</p>
+              <h3 className="text-xl fredoka font-semibold mb-2">{title}</h3>
+              <p className="text-gray-600 inter dark:text-gray-300">{desc}</p>
             </div>
           ))}
         </motion.div>
@@ -66,19 +66,19 @@ const Volunteer = () => {
           viewport={{ once: true }}
           className="text-center space-y-4"
         >
-          <h2 className="text-2xl font-bold">Want to Volunteer?</h2>
-          <p className="text-gray-600 dark:text-gray-300">Reach out to us—we’d love to hear from you!</p>
+          <h2 className="text-2xl fredoka font-bold">Want to Volunteer?</h2>
+          <p className="text-gray-600 inter dark:text-gray-300">Reach out to us—we’d love to hear from you!</p>
 
           <div className="flex flex-col sm:flex-row sm:justify-center sm:gap-12 items-center space-y-3 sm:space-y-0 text-gray-700 dark:text-gray-300 text-md mt-4">
-            <div className="flex items-center gap-2">
+            <div className="flex inter items-center gap-2">
               <FaEnvelope className="text-pink-500" />
               <span>volunteer@petsera.org</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex inter items-center gap-2">
               <FaPhoneAlt className="text-pink-500" />
               <span>+880 1234 567890</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex inter items-center gap-2">
               <FaMapMarkerAlt className="text-pink-500" />
               <span>Petsera HQ, Dhaka, Bangladesh</span>
             </div>

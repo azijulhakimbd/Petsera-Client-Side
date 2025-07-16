@@ -21,12 +21,12 @@
 .inter {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
+  font-weight: 600;
   font-style: normal;
 }
 .lato {
   font-family: "Lato", sans-serif;
-  font-weight: 400;
+  font-weight: 600;
   font-style: normal;
 }
 @custom-variant dark (&:is(.dark *));

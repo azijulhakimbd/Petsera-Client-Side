@@ -63,7 +63,7 @@ const DashboardLayout = () => {
               alt="Petsera logo"
               className="w-16"
             />
-            <span className="hidden sm:block text-xl font-bold text-primary dark:text-primary-light">
+            <span className="hidden sm:block fredoka text-xl font-bold text-primary dark:text-primary-light">
               Petsera
             </span>
           </Link>
@@ -112,13 +112,14 @@ const DashboardLayout = () => {
               },
               {
                 to: "/dashboard/my-donations",
-                icon: <FaGift className="text-pink-600 dark:text-pink-400" size={24} />,
+                icon: <FaGift className="text-green-600 dark:text-green-400" size={24} />,
                 label: "My Donations",
                 bg: "pink",
               },
+              
               {
                 to: "/dashboard/all-users",
-                icon: <FaUsers className="text-pink-600 dark:text-pink-400" size={24} />,
+                icon: <FaUsers className="text-blue-700 dark:text-blue-400" size={24} />,
                 label: "All Users",
                 bg: "pink",
               },
@@ -126,11 +127,11 @@ const DashboardLayout = () => {
                 to: "/dashboard/all-pets",
                 icon: <FaPaw className="text-pink-600 dark:text-pink-400" size={24} />,
                 label: "All Pets",
-                bg: "pink",
+                bg: "red",
               },
               {
                 to: "/dashboard/all-donations",
-                icon: <MdVolunteerActivism className="text-pink-600 dark:text-pink-400" size={24} />,
+                icon: <MdVolunteerActivism className="text-green-600 dark:text-green-400" size={24} />,
                 label: "All Donations",
                 bg: "pink",
               },
@@ -139,7 +140,7 @@ const DashboardLayout = () => {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 px-4 py-2 rounded hover:bg-${item.bg}-100 dark:hover:bg-${item.bg}-900 ${
+                  `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-${item.bg}-100 dark:hover:bg-${item.bg}-900 ${
                     isActive
                       ? `bg-${item.bg}-200 dark:bg-${item.bg}-700 font-semibold`
                       : "dark:text-gray-300 text-gray-800"
@@ -181,7 +182,7 @@ const DashboardLayout = () => {
             <FaBars size={24} />
           </button>
 
-          <div className="font-semibold text-lg text-gray-900 dark:text-gray-100">Dashboard</div>
+          <div className="font-semibold fredoka text-lg text-gray-900 dark:text-gray-100">Dashboard</div>
 
           <div className="flex items-center gap-4">
             {/* Dark mode toggle */}

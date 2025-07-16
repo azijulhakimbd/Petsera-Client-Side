@@ -81,7 +81,7 @@ const HeroSlider = () => {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-2xl md:text-5xl font-bold Poppins text-orange-400 mb-3"
+                    className="text-2xl md:text-5xl font-bold fredoka text-orange-400 mb-3"
                   >
                     {banner.title}
                   </motion.h2>
