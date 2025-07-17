@@ -75,21 +75,21 @@ const AllUsers = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-        All Users
+      <h2 className="text-2xl font-bold fredoka mb-4 text-gray-900 dark:text-gray-100">
+        All Users (Admin)
       </h2>
 
       <div className="overflow-x-auto rounded-md border border-gray-300 dark:border-gray-700">
         <table className="table-auto w-full min-w-[600px] border-collapse text-gray-800 dark:text-gray-200">
           <thead className="bg-gray-100 dark:bg-gray-800 sticky top-0 z-10">
             <tr>
-              <th className="px-3 py-2 text-left text-sm font-medium">#</th>
-              <th className="px-3 py-2 text-left text-sm font-medium">Profile</th>
-              <th className="px-3 py-2 text-left text-sm font-medium">Name</th>
-              <th className="px-3 py-2 text-left text-sm font-medium">Email</th>
-              <th className="px-3 py-2 text-left text-sm font-medium">Role</th>
-              <th className="px-3 py-2 text-left text-sm font-medium">Status</th>
-              <th className="px-3 py-2 text-center text-sm font-medium">Actions</th>
+              <th className="px-3 py-2 inter text-left text-sm font-medium">#</th>
+              <th className="px-3 py-2 inter text-left text-sm font-medium">Profile</th>
+              <th className="px-3 py-2 inter text-left text-sm font-medium">Name</th>
+              <th className="px-3 py-2 inter text-left text-sm font-medium">Email</th>
+              <th className="px-3 py-2 inter text-left text-sm font-medium">Role</th>
+              <th className="px-3 py-2 inter text-left text-sm font-medium">Status</th>
+              <th className="px-3 py-2 inter text-center text-sm font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -103,22 +103,22 @@ const AllUsers = () => {
                   transition={{ duration: 0.3 }}
                   className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900"
                 >
-                  <td className="px-3 py-2">{idx + 1}</td>
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 lato">{idx + 1}</td>
+                  <td className="px-3 py-2 lato">
                     <img
                       src={user.photoURL || "/default-avatar.png"}
                       alt="avatar"
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-10 h-10 lato rounded-full object-cover"
                     />
                   </td>
-                  <td className="px-3 py-2">{user.name || "Unknown"}</td>
-                  <td className="px-3 py-2 break-all">{user.email}</td>
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 lato">{user.name || "Unknown"}</td>
+                  <td className="px-3 py-2 lato break-all">{user.email}</td>
+                  <td className="px-3 py-2 lato">
                     <span
-                      className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
+                      className={`inline-block px-2 lato py-1 rounded text-xs font-semibold ${
                         user.role === "admin"
-                          ? "bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200"
-                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                          ? "bg-green-200 text-green-800 lato dark:bg-green-800 dark:text-green-200"
+                          : "bg-gray-200 text-gray-800 lato dark:bg-gray-700 dark:text-gray-300"
                       }`}
                     >
                       {user.role}
@@ -126,11 +126,11 @@ const AllUsers = () => {
                   </td>
                   <td className="px-3 py-2">
                     {user.status === "banned" ? (
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200">
+                      <span className="inline-block px-2 py-1 lato rounded text-xs font-semibold bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200">
                         Banned
                       </span>
                     ) : (
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200">
+                      <span className="inline-block px-2 py-1 lato rounded text-xs font-semibold bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200">
                         Active
                       </span>
                     )}
@@ -139,7 +139,7 @@ const AllUsers = () => {
                     {user.role !== "admin" && (
                       <button
                         onClick={() => makeAdminMutation.mutate(user._id)}
-                        className="inline-flex items-center btn p-2 rounded-2xl text-white bg-green-600 btn-xs btn-outline btn-success hover:bg-green-300 hover:text-white dark:hover:bg-green-500"
+                        className="inline-flex items-center btn p-2 rounded-2xl lato text-white bg-green-600 btn-xs btn-outline btn-success hover:bg-green-300 hover:text-white dark:hover:bg-green-500"
                         disabled={makeAdminMutation.isLoading}
                         aria-label={`Make ${user.name} an admin`}
                       >
@@ -150,7 +150,7 @@ const AllUsers = () => {
                     {user.status !== "banned" ? (
                       <button
                         onClick={() => banUserMutation.mutate(user._id)}
-                        className="inline-flex items-center bg-yellow-600 btn rounded-2xl p-2 btn-xs btn-outline btn-error hover:bg-red-600 hover:text-white dark:hover:bg-red-500"
+                        className="inline-flex items-center bg-yellow-600 lato btn rounded-2xl p-2 btn-xs btn-outline btn-error hover:bg-red-600 hover:text-white dark:hover:bg-red-500"
                         disabled={banUserMutation.isLoading}
                         aria-label={`Ban ${user.name}`}
                       >
@@ -172,7 +172,7 @@ const AllUsers = () => {
                             }
                           });
                         }}
-                        className="inline-flex items-center bg-blue-600 btn rounded-2xl p-2 btn-xs btn-outline hover:bg-blue-400 hover:text-white dark:hover:bg-blue-500"
+                        className="inline-flex items-center bg-blue-600 lato btn rounded-2xl p-2 btn-xs btn-outline hover:bg-blue-400 hover:text-white dark:hover:bg-blue-500"
                         disabled={unbanUserMutation.isLoading}
                         aria-label={`Unban ${user.name}`}
                       >

@@ -70,7 +70,7 @@ const CreateDonationCampaign = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
+      <h2 className="text-2xl fredoka font-bold mb-6 text-center text-gray-800 dark:text-white">
         Create Donation Campaign
       </h2>
 
@@ -78,7 +78,7 @@ const CreateDonationCampaign = () => {
 
         {/* Pet Name */}
         <div>
-          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+          <label className="block inter font-medium mb-1 text-gray-700 dark:text-gray-200">
             Pet Name
           </label>
           {uploading ? (
@@ -99,7 +99,7 @@ const CreateDonationCampaign = () => {
 
         {/* Pet Picture */}
         <div>
-          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+          <label className="block inter font-medium mb-1 text-gray-700 dark:text-gray-200">
             Pet Picture
           </label>
           {uploading ? (
@@ -121,7 +121,7 @@ const CreateDonationCampaign = () => {
 
         {/* Max Donation Amount */}
         <div>
-          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+          <label className="block inter font-medium mb-1 text-gray-700 dark:text-gray-200">
             Maximum Donation Amount ($)
           </label>
           {uploading ? (
@@ -143,7 +143,7 @@ const CreateDonationCampaign = () => {
 
         {/* Last Date */}
         <div>
-          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+          <label className="block inter font-medium mb-1 text-gray-700 dark:text-gray-200">
             Last Date of Donation
           </label>
           {uploading ? (
@@ -164,7 +164,7 @@ const CreateDonationCampaign = () => {
 
         {/* Short Description */}
         <div>
-          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+          <label className="block inter font-medium mb-1 text-gray-700 dark:text-gray-200">
             Short Description
           </label>
           {uploading ? (
@@ -187,7 +187,7 @@ const CreateDonationCampaign = () => {
 
         {/* Long Description */}
         <div>
-          <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">
+          <label className="block inter font-medium mb-1 text-gray-700 dark:text-gray-200">
             Long Description
           </label>
           {uploading ? (

@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { FaUserAlt, FaLock, FaGoogle, FaGithub } from "react-icons/fa";
 import { AuthContext } from "../../Context/AuthContext";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Login = () => {
-  const { signIn, googleSignIn, githubSignIn } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,31 +41,8 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setFirebaseError("");
-    try {
-      setSubmitting(true);
-      await googleSignIn();
-      navigate(from);
-    } catch (err) {
-      setFirebaseError("Google login failed.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+ 
 
-  const handleGitHubLogin = async () => {
-    setFirebaseError("");
-    try {
-      setSubmitting(true);
-      await githubSignIn();
-      navigate(from);
-    } catch (err) {
-      setFirebaseError("GitHub login failed.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <div
@@ -152,21 +130,7 @@ const Login = () => {
 
         {/* Social Login */}
         <div className="my-6 flex items-center justify-center gap-4">
-          <button
-            onClick={handleGoogleLogin}
-            disabled={submitting}
-            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md text-white font-semibold transition"
-          >
-            <FaGoogle /> Google
-          </button>
-
-          <button
-            onClick={handleGitHubLogin}
-            disabled={submitting}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 rounded-md text-white font-semibold transition"
-          >
-            <FaGithub /> GitHub
-          </button>
+         <SocialLogin></SocialLogin>
         </div>
 
         {/* Link to Register */}

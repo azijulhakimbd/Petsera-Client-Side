@@ -83,7 +83,7 @@ const UpdateMyPet = () => {
 
   return (
     <section className="max-w-3xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">
+      <h2 className="text-3xl font-semibold fredoka text-center mb-6 dark:text-white">
         Update Pet Information
       </h2>
 
@@ -101,7 +101,7 @@ const UpdateMyPet = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Name */}
           <div>
-            <label className="block mb-1 font-medium dark:text-white">Name</label>
+            <label className="block lato mb-1 font-medium dark:text-white">Name</label>
             <input
               type="text"
               {...register("name", { required: "Name is required" })}
@@ -112,7 +112,7 @@ const UpdateMyPet = () => {
 
           {/* Age */}
           <div>
-            <label className="block mb-1 font-medium dark:text-white">Age</label>
+            <label className="block lato mb-1 font-medium dark:text-white">Age</label>
             <input
               type="number"
               {...register("age", { required: "Age is required", min: 0 })}
@@ -123,7 +123,7 @@ const UpdateMyPet = () => {
 
           {/* Category */}
           <div>
-            <label className="block mb-1 font-medium dark:text-white">Category</label>
+            <label className="block lato mb-1 font-medium dark:text-white">Category</label>
             <select
               {...register("category", { required: "Category is required" })}
               className="select select-bordered border rounded-2xl p-2 w-full dark:bg-gray-800 dark:text-white"
@@ -140,7 +140,7 @@ const UpdateMyPet = () => {
 
           {/* Location */}
           <div>
-            <label className="block mb-1 font-medium dark:text-white">Location</label>
+            <label className="block lato mb-1 font-medium dark:text-white">Location</label>
             <input
               type="text"
               {...register("location", { required: "Location is required" })}
@@ -151,7 +151,7 @@ const UpdateMyPet = () => {
 
           {/* Short Description */}
           <div>
-            <label className="block mb-1 font-medium dark:text-white">Short Description</label>
+            <label className="block lato mb-1 font-medium dark:text-white">Short Description</label>
             <input
               type="text"
               {...register("shortDescription", {
@@ -166,7 +166,7 @@ const UpdateMyPet = () => {
 
           {/* Long Description */}
           <div>
-            <label className="block mb-1 font-medium dark:text-white">Long Description</label>
+            <label className="block mb-1 lato font-medium dark:text-white">Long Description</label>
             <textarea
               rows="4"
               {...register("longDescription", {
@@ -183,7 +183,7 @@ const UpdateMyPet = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn hover:bg-green-500 bg-amber-300 w-full p-3 rounded-2xl text-blue-600"
+            className="btn hover:bg-green-500 fredoka bg-amber-300 w-full p-3 rounded-2xl text-blue-600"
           >
             {isSubmitting ? "Updating..." : "Update Pet"}
           </button>

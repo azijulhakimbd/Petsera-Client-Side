@@ -107,17 +107,17 @@ const AddPet = () => {
       transition={{ duration: 0.5 }}
       className="max-w-3xl mx-auto p-6 bg-white dark:bg-gray-900 dark:text-white rounded-lg shadow mt-10"
     >
-      <h2 className="text-2xl font-bold mb-6 text-center">Add a Pet</h2>
+      <h2 className="text-2xl font-bold fredoka mb-6 text-center">Add a Pet</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Pet Image */}
         <div>
-          <label className="block font-medium mb-1">Pet Image</label>
+          <label className="block font-medium mb-1 inter">Pet Image</label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => uploadImage(e.target.files[0])}
-            className="w-full border px-4 py-2 rounded bg-white dark:bg-gray-800 dark:text-white"
+            className="w-full border inter px-4 py-2 rounded bg-white dark:bg-gray-800 dark:text-white"
           />
           {imageError && <p className="text-red-500">{imageError}</p>}
           {imageUploading ? (
@@ -127,7 +127,7 @@ const AddPet = () => {
               <img
                 src={imageUrl}
                 alt="Preview"
-                className="w-32 h-32 mt-2 object-cover rounded"
+                className="w-32 h-32 mt-2 inter object-cover rounded"
               />
             )
           )}
@@ -138,9 +138,9 @@ const AddPet = () => {
           <input
             {...register("name", { required: "Pet name is required" })}
             placeholder="Pet Name"
-            className="input-field w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white"
+            className="input-field w-full inter px-4 py-2 rounded border dark:bg-gray-800 dark:text-white"
           />
-          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+          {errors.name && <p className="text-red-500 inter">{errors.name.message}</p>}
         </div>
 
         {/* Pet Age */}
@@ -148,14 +148,14 @@ const AddPet = () => {
           <input
             {...register("age", { required: "Pet age is required" })}
             placeholder="Pet Age"
-            className="input-field w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white"
+            className="input-field w-full px-4 inter py-2 rounded border dark:bg-gray-800 dark:text-white"
           />
-          {errors.age && <p className="text-red-500">{errors.age.message}</p>}
+          {errors.age && <p className="text-red-500 inter">{errors.age.message}</p>}
         </div>
 
         {/* Pet Category */}
         <div>
-          <label className="block font-medium mb-1">Pet Category</label>
+          <label className="block font-medium mb-1 inter">Pet Category</label>
           <Controller
             name="category"
             control={control}
@@ -164,12 +164,12 @@ const AddPet = () => {
               <Select
                 {...field}
                 options={categoryOptions}
-                className="text-black"
+                className="text-black inter"
               />
             )}
           />
           {errors.category && (
-            <p className="text-red-500">{errors.category.message}</p>
+            <p className="text-red-500 inter">{errors.category.message}</p>
           )}
         </div>
 
@@ -178,10 +178,10 @@ const AddPet = () => {
           <input
             {...register("location", { required: "Location is required" })}
             placeholder="Pickup Location"
-            className="input-field w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white"
+            className="input-field w-full px-4 py-2 rounded inter border dark:bg-gray-800 dark:text-white"
           />
           {errors.location && (
-            <p className="text-red-500">{errors.location.message}</p>
+            <p className="text-red-500 inter">{errors.location.message}</p>
           )}
         </div>
 
@@ -190,10 +190,10 @@ const AddPet = () => {
           <input
             {...register("shortDescription", { required: "Short description is required" })}
             placeholder="Short Description"
-            className="input-field w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white"
+            className="input-field w-full px-4 inter py-2 rounded border dark:bg-gray-800 dark:text-white"
           />
           {errors.shortDescription && (
-            <p className="text-red-500">{errors.shortDescription.message}</p>
+            <p className="text-red-500 inter">{errors.shortDescription.message}</p>
           )}
         </div>
 
@@ -203,10 +203,10 @@ const AddPet = () => {
             {...register("longDescription", { required: "Long description is required" })}
             placeholder="Long Description"
             rows={5}
-            className="w-full px-4 py-2 rounded border dark:bg-gray-800 dark:text-white"
+            className="w-full px-4 py-2 inter rounded border dark:bg-gray-800 dark:text-white"
           />
           {errors.longDescription && (
-            <p className="text-red-500">{errors.longDescription.message}</p>
+            <p className="text-red-500 inter">{errors.longDescription.message}</p>
           )}
         </div>
 
@@ -215,7 +215,7 @@ const AddPet = () => {
           whileTap={{ scale: 0.95 }}
           type="submit"
           disabled={isSubmitting || isPending}
-          className="bg-primary dark:bg-indigo-600 text-white px-6 py-2 rounded hover:bg-primary/90 dark:hover:bg-indigo-700"
+          className="bg-primary fredoka dark:bg-indigo-600 text-white px-6 py-2 rounded hover:bg-primary/90 dark:hover:bg-indigo-700"
         >
           {isPending ? "Submitting..." : "Add Pet"}
         </motion.button>

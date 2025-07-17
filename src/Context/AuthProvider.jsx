@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import axios from "axios";
 
 import {
   createUserWithEmailAndPassword,
@@ -18,51 +19,73 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // email ,password authentication
-  const createUser = (email, password) => {
-    setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-
-  //   sign in email password
-  const signIn = (email, password) => {
-    setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-
-  //   Google sign up
+  // Firebase providers
   const providerG = new GoogleAuthProvider();
-  const googleSignIn = () => {
-    setLoading(true);
-    return signInWithPopup(auth, providerG);
-  };
-  // Github Signin
   const providerGit = new GithubAuthProvider();
   const authG = getAuth();
-  const githubSignIn = () => {
-    return signInWithPopup(authG, providerGit);
+
+  // 🔐 Send Firebase ID token to backend for setting JWT cookie
+  const getAndSetJwtCookie = async (firebaseUser) => {
+    const idToken = await firebaseUser.getIdToken();
+    await axios.post("http://localhost:3000/jwt", { idToken }, { withCredentials: true });
   };
 
-  // Sign Out
-  const userSignOut = () => {
+  // Email/password registration
+  const createUser = async (email, password) => {
     setLoading(true);
-    return signOut(auth);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await getAndSetJwtCookie(userCredential.user);
+    return userCredential;
   };
-  // Update User
+
+  // Email/password login
+  const signIn = async (email, password) => {
+    setLoading(true);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    await getAndSetJwtCookie(userCredential.user);
+    return userCredential;
+  };
+
+  // Google login
+  const googleSignIn = async () => {
+    setLoading(true);
+    const result = await signInWithPopup(auth, providerG);
+    await getAndSetJwtCookie(result.user);
+    return result;
+  };
+
+  // GitHub login
+  const githubSignIn = async () => {
+    setLoading(true);
+    const result = await signInWithPopup(authG, providerGit);
+    await getAndSetJwtCookie(result.user);
+    return result;
+  };
+
+  // Logout: Firebase + JWT cookie
+  const userSignOut = async () => {
+    setLoading(true);
+    await signOut(auth);
+    await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
+    setUser(null);
+    setLoading(false);
+  };
+
+  // Update profile
   const updateUserProfile = (profileInfo) => {
     return updateProfile(auth.currentUser, profileInfo);
   };
-  //   Observer
+
+  // Firebase Auth observer
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
-    return () => {
-      unSubscribe();
-    };
+    return () => unSubscribe();
   }, []);
-  // Auth Info
+
+  // Provide all auth info
   const authInfo = {
     user,
     setUser,
@@ -75,7 +98,8 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
     userSignOut,
   };
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

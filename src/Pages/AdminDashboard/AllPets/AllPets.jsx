@@ -100,19 +100,19 @@ const AllPets = () => {
 
   return (
     <div className="p-4 max-w-7xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
+      <h2 className="text-2xl font-bold mb-4 text-center fredoka dark:text-white">
         All Pets (Admin)
       </h2>
       <div className="overflow-x-auto rounded-lg shadow-md">
         <table className="min-w-full border border-gray-300 dark:border-gray-600">
           <thead>
             <tr className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
-              <th className="p-2 border">Name</th>
-              <th className="p-2 border">Type</th>
-              <th className="p-2 border">Age</th>
-              <th className="p-2 border">Status</th>
-              <th className="p-2 border">Added By</th>
-              <th className="p-2 border">Actions</th>
+              <th className="p-2 inter border">Name</th>
+              <th className="p-2 inter border">Type</th>
+              <th className="p-2 inter border">Age</th>
+              <th className="p-2 inter border">Status</th>
+              <th className="p-2 inter border">Added By</th>
+              <th className="p-2 inter border">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -131,22 +131,22 @@ const AllPets = () => {
                         type="text"
                         value={editedName}
                         onChange={(e) => setEditedName(e.target.value)}
-                        className="border px-2 py-1 rounded w-full dark:bg-gray-900 dark:text-white"
+                        className="border lato px-2 py-1 rounded w-full dark:bg-gray-900 dark:text-white"
                       />
                     ) : (
                       <span className="dark:text-white">{pet.name}</span>
                     )}
                   </td>
-                  <td className="border p-2 dark:text-white">{pet.type}</td>
-                  <td className="border p-2 dark:text-white">{pet.age}</td>
-                  <td className="border p-2">
+                  <td className="border lato p-2 dark:text-white">{pet.type}</td>
+                  <td className="border lato p-2 dark:text-white">{pet.age}</td>
+                  <td className="border lato p-2">
                     {pet.adopted ? (
-                      <span className="text-green-600 font-semibold">Adopted</span>
+                      <span className="text-green-600 lato font-semibold">Adopted</span>
                     ) : (
-                      <span className="text-red-600 font-semibold">Available</span>
+                      <span className="text-red-600 lato font-semibold">Available</span>
                     )}
                   </td>
-                  <td className="border p-2 dark:text-white">
+                  <td className="border p-2 lato dark:text-white">
                     {pet.addedBy}
                   </td>
                   <td className="border p-2 flex gap-2 justify-center">
@@ -154,14 +154,14 @@ const AllPets = () => {
                       <>
                         <button
                           onClick={saveEditing}
-                          className="text-green-600 hover:text-green-800"
+                          className="text-green-600 lato hover:text-green-800"
                           title="Save"
                         >
                           <FaCheck />
                         </button>
                         <button
                           onClick={cancelEditing}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-red-600 lato hover:text-red-800"
                           title="Cancel"
                         >
                           <FaTimes />
@@ -171,7 +171,7 @@ const AllPets = () => {
                       <>
                         <button
                           onClick={() => startEditing(pet)}
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-blue-600 lato hover:text-blue-800"
                           title="Edit"
                         >
                           <FaEdit />
@@ -190,7 +190,7 @@ const AllPets = () => {
                               }
                             })
                           }
-                          className="text-red-600 hover:text-red-800"
+                          className="text-red-600 lato hover:text-red-800"
                           title="Delete"
                         >
                           <FaTrash />
@@ -204,9 +204,9 @@ const AllPets = () => {
                           }
                           className={`${
                             pet.adopted
-                              ? "text-yellow-600"
-                              : "text-green-600"
-                          } hover:text-yellow-800`}
+                              ? "text-yellow-600 lato"
+                              : "text-green-600 lato"
+                          } hover:text-yellow-800 lato`}
                           title={pet.adopted ? "Mark as Not Adopted" : "Mark as Adopted"}
                         >
                           {pet.adopted ? <FaTimes /> : <FaCheck />}

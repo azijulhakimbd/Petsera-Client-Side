@@ -70,12 +70,12 @@ const MyDonations = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <h2 className="text-2xl font-semibold mb-4 text-center sm:text-left">
+      <h2 className="text-2xl fredoka font-semibold mb-4 text-center sm:text-left">
         My Donations
       </h2>
 
       {donations.length === 0 ? (
-        <p className="text-center text-gray-500 dark:text-gray-400">
+        <p className="text-center inter text-gray-500 dark:text-gray-400">
           No donations found.
         </p>
       ) : (
@@ -83,10 +83,10 @@ const MyDonations = () => {
           <table className="w-full table-auto text-sm sm:text-base bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
             <thead className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
               <tr>
-                <th className="px-4 py-3 text-left">Pet Image</th>
-                <th className="px-4 py-3 text-left">Pet Name</th>
-                <th className="px-4 py-3 text-left">Donated Amount</th>
-                <th className="px-4 py-3 text-left">Refund</th>
+                <th className="px-4 py-3 inter text-left">Pet Image</th>
+                <th className="px-4 py-3 inter text-left">Pet Name</th>
+                <th className="px-4 py-3 inter text-left">Donated Amount</th>
+                <th className="px-4 py-3 inter text-left">Refund</th>
               </tr>
             </thead>
             <tbody>
@@ -105,16 +105,16 @@ const MyDonations = () => {
                       className="w-16 h-16 object-cover rounded-md"
                     />
                   </td>
-                  <td className="px-4 py-3 font-medium">{donation.petName}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 font-medium inter">{donation.petName}</td>
+                  <td className="px-4 py-3 inter">
                     {donation.amount !== undefined
                       ? `$${Number(donation.amount).toFixed(2)}`
                       : "N/A"}
                   </td>
-                  <td className="px-4  py-3">
+                  <td className="px-4 inter py-3">
                     <button
                       onClick={() => handleRefund(donation._id)}
-                      className="bg-yellow-500 btn hover:bg-red-600 text-white px-4 py-2 rounded-xl"
+                      className="bg-yellow-500 inter btn hover:bg-red-600 text-white px-4 py-2 rounded-xl"
                     >
                       Ask for Refund
                     </button>

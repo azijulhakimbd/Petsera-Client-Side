@@ -27,6 +27,7 @@ import AllUsers from "../Pages/AdminDashboard/AllUsers/AllUsers";
 import DashboardHome from "../Layout/DashboardLayout/DashboardHome";
 import UpdateDonationsCampaign from "../Pages/UserDashboard/MyDonationCampaigns/EditDonationsCampaign";
 import AllDonations from "../Pages/AdminDashboard/AllDonations/AllDonations";
+import NotFound from "../Pages/Error/NotFound";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
@@ -172,4 +173,8 @@ export const router = createBrowserRouter([
       }
     ],
   },
+  {
+    path:'/*',
+    Component: NotFound
+  }
 ]);

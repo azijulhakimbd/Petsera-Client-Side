@@ -76,16 +76,16 @@ const AllDonations = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">All Donation Campaigns (Admin)</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center dark:text-white fredoka">All Donation Campaigns (Admin)</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300 dark:border-gray-700">
           <thead className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
             <tr>
-              <th className="p-2 border">Title</th>
-              <th className="p-2 border">Total Amount</th>
-              <th className="p-2 border">Status</th>
-              <th className="p-2 border">Created By</th>
-              <th className="p-2 border">Actions</th>
+              <th className="p-2 lato border">Title</th>
+              <th className="p-2 lato border">Total Amount</th>
+              <th className="p-2 lato border">Status</th>
+              <th className="p-2 lato border">Created By</th>
+              <th className="p-2 lato border">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -106,31 +106,31 @@ const AllDonations = () => {
                         className="w-full px-2 py-1 border rounded dark:bg-gray-900 dark:text-white"
                       />
                     ) : (
-                      <span className="dark:text-white">{donation.petName}</span>
+                      <span className="dark:text-white inter">{donation.petName}</span>
                     )}
                   </td>
-                  <td className="border p-2 dark:text-white">${donation.maxAmount}</td>
+                  <td className="border p-2 dark:text-white inter">${donation.maxAmount}</td>
                   <td className="border p-2">
                     {donation.paused ? (
-                      <span className="text-yellow-500 font-medium">Paused</span>
+                      <span className="text-yellow-500 font-medium inter">Paused</span>
                     ) : (
-                      <span className="text-green-600 font-semibold">Active</span>
+                      <span className="text-green-600 font-semibold inter">Active</span>
                     )}
                   </td>
-                  <td className="border p-2 dark:text-white">{donation.createdBy}</td>
+                  <td className="border p-2 dark:text-white inter">{donation.createdBy}</td>
                   <td className="border p-2 flex flex-wrap gap-2 justify-center">
                     {editingId === donation._id ? (
                       <>
                         <button
                           onClick={saveEditing}
-                          className="text-green-600 hover:text-green-800"
+                          className="text-green-600 inter hover:text-green-800"
                           title="Save"
                         >
                           <FaCheck />
                         </button>
                         <button
                           onClick={cancelEditing}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-red-600 inter hover:text-red-800"
                           title="Cancel"
                         >
                           <FaTimes />
@@ -140,7 +140,7 @@ const AllDonations = () => {
                       <>
                         <button
                           onClick={() => startEditing(donation)}
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-blue-600 inter hover:text-blue-800"
                           title="Edit"
                         >
                           <FaEdit />
@@ -159,7 +159,7 @@ const AllDonations = () => {
                               }
                             })
                           }
-                          className="text-red-600 hover:text-red-800"
+                          className="text-red-600 inter hover:text-red-800"
                           title="Delete"
                         >
                           <FaTrash />
@@ -173,8 +173,8 @@ const AllDonations = () => {
                           }
                           className={`${
                             donation.paused
-                              ? "text-green-500 hover:text-green-700"
-                              : "text-yellow-600 hover:text-yellow-800"
+                              ? "text-green-500 inter hover:text-green-700"
+                              : "text-yellow-600 inter hover:text-yellow-800"
                           }`}
                           title={donation.paused ? "Unpause" : "Pause"}
                         >

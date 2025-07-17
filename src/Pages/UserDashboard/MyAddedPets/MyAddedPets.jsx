@@ -132,9 +132,9 @@ const MyAddedPets = () => {
         accessorKey: "adopted",
         cell: (info) =>
           info.getValue() ? (
-            <span className="text-green-500 font-semibold">Adopted</span>
+            <span className="text-green-500 inter font-semibold">Adopted</span>
           ) : (
-            <span className="text-yellow-500 font-medium">Not Adopted</span>
+            <span className="text-yellow-500 inter font-medium">Not Adopted</span>
           ),
       },
       {
@@ -151,21 +151,21 @@ const MyAddedPets = () => {
             >
               <button
                 onClick={() => navigate(`/dashboard/update-pet/${pet._id}`)}
-                className="text-yellow-400 flex items-center gap-1"
+                className="text-yellow-400 lato flex items-center gap-1"
                 title="Update"
               >
                 <FaEdit /> Update
               </button>
               <button
                 onClick={() => handleDelete(pet._id, pet.name)}
-                className="text-red-500 flex items-center gap-1"
+                className="text-red-500 lato flex items-center gap-1"
                 title="Delete"
               >
                 <FaTrash /> Delete
               </button>
               <button
                 onClick={() => handleAdopt(pet._id, pet.adopted)}
-                className="text-green-500 flex items-center gap-1"
+                className="text-green-500 lato flex items-center gap-1"
                 disabled={pet.adopted}
                 title="Mark as Adopted"
               >
@@ -192,13 +192,13 @@ const MyAddedPets = () => {
   return (
     <div className="max-w-7xl mx-auto p-4 min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">My Added Pets</h2>
+        <h2 className="text-2xl fredoka font-bold">My Added Pets</h2>
       </div>
 
       {isLoading ? (
         <Skeleton height={40} count={5} className="mb-2" />
       ) : isError ? (
-        <div className="text-red-600 dark:text-red-400 text-center p-4">
+        <div className="text-red-600 dark:text-red-400 lato text-center p-4">
           Error: {error.message}
         </div>
       ) : (
@@ -235,7 +235,7 @@ const MyAddedPets = () => {
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="text-center py-4 dark:text-gray-400"
+                    className="text-center py-4 fredoka dark:text-gray-400"
                   >
                     No pets added yet.
                   </td>
@@ -252,7 +252,7 @@ const MyAddedPets = () => {
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="border-b border-gray-200 dark:border-gray-700 px-4 py-3 text-center"
+                        className="border-b border-gray-200 lato dark:border-gray-700 px-4 py-3 text-center"
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
@@ -271,14 +271,14 @@ const MyAddedPets = () => {
               </div>
               <div className="flex gap-2">
                 <button
-                  className="btn btn-sm"
+                  className="btn inter hover:bg-green-400 lato bg-green-600 rounded p-1 btn-sm"
                   onClick={() => table.previousPage()}
                   disabled={!table.getCanPreviousPage()}
                 >
                   Prev
                 </button>
                 <button
-                  className="btn btn-sm"
+                  className="btn inter hover:bg-green-400 lato bg-green-600 rounded p-1 btn-sm"
                   onClick={() => table.nextPage()}
                   disabled={!table.getCanNextPage()}
                 >
