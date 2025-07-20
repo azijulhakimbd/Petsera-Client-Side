@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
-
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -19,73 +17,98 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Firebase providers
   const providerG = new GoogleAuthProvider();
   const providerGit = new GithubAuthProvider();
-  const authG = getAuth();
 
-  // 🔐 Send Firebase ID token to backend for setting JWT cookie
+  // 🔐 Send Firebase ID token to backend and set HTTP-only cookie
   const getAndSetJwtCookie = async (firebaseUser) => {
     const idToken = await firebaseUser.getIdToken();
-    await axios.post("http://localhost:3000/jwt", { idToken }, { withCredentials: true });
+    await axios.post(
+      "https://petsera-server-side.vercel.app/jwt",
+      { idToken },
+      { withCredentials: true }
+    );
   };
 
-  // Email/password registration
+  // 🟢 Register with email & password
   const createUser = async (email, password) => {
     setLoading(true);
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     await getAndSetJwtCookie(userCredential.user);
+    setUser(userCredential.user);
+    setLoading(false);
     return userCredential;
   };
 
-  // Email/password login
+  // 🟢 Sign in with email & password
   const signIn = async (email, password) => {
     setLoading(true);
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
     await getAndSetJwtCookie(userCredential.user);
+    setUser(userCredential.user);
+    setLoading(false);
     return userCredential;
   };
 
-  // Google login
+  // 🟢 Google Sign-In
   const googleSignIn = async () => {
     setLoading(true);
     const result = await signInWithPopup(auth, providerG);
     await getAndSetJwtCookie(result.user);
+    setUser(result.user);
+    setLoading(false);
     return result;
   };
 
-  // GitHub login
+  // 🟢 GitHub Sign-In
   const githubSignIn = async () => {
     setLoading(true);
-    const result = await signInWithPopup(authG, providerGit);
+    const result = await signInWithPopup(auth, providerGit);
     await getAndSetJwtCookie(result.user);
+    setUser(result.user);
+    setLoading(false);
     return result;
   };
 
-  // Logout: Firebase + JWT cookie
+  // 🔴 Logout from Firebase + clear cookie from server
   const userSignOut = async () => {
     setLoading(true);
     await signOut(auth);
-    await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
+    await axios.post(
+      "https://petsera-server-side.vercel.app/logout",
+      {},
+      { withCredentials: true }
+    );
     setUser(null);
     setLoading(false);
   };
 
-  // Update profile
-  const updateUserProfile = (profileInfo) => {
-    return updateProfile(auth.currentUser, profileInfo);
+  // 🟡 Update Firebase user profile
+  const updateUserProfile = async (profileInfo) => {
+    if (auth.currentUser) {
+      await updateProfile(auth.currentUser, profileInfo);
+    }
   };
 
-  // Firebase Auth observer
+  // 🟣 Listen for Firebase user state changes
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser || null);
       setLoading(false);
     });
-    return () => unSubscribe();
+
+    return () => unsubscribe();
   }, []);
 
-  // Provide all auth info
+  // Provide all auth functions + states
   const authInfo = {
     user,
     setUser,
@@ -99,7 +122,9 @@ const AuthProvider = ({ children }) => {
     userSignOut,
   };
 
-  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

@@ -14,13 +14,14 @@ import {
   FaCoins,
   FaPauseCircle,
   FaRocket,
-  FaPaw,
 } from "react-icons/fa";
 
 Modal.setAppElement("#root");
 
 const DonationDetails = () => {
   const { id } = useParams();
+  console.log(id);
+  
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const stripe = useStripe();
@@ -32,14 +33,15 @@ const DonationDetails = () => {
   const [donationAmount, setDonationAmount] = useState("");
 
   useEffect(() => {
-    axiosSecure.get(`/donations/${id}`).then((res) => {
-      setCampaign(res.data);
-    });
-  }, [id, axiosSecure]);
+  if (!id || id.length !== 24) return; 
+  axiosSecure.get(`/donations/${id}`)
+    .then((res) => setCampaign(res.data))
+    .catch((err) => console.error(err));
+}, [id, axiosSecure]);
 
   useEffect(() => {
     axiosSecure
-      .get(`/donations/recommended?exclude=${id}&limit=3`)
+      .get(`/donations/recommended`)
       .then((res) => setRecommended(res.data));
   }, [id, axiosSecure]);
 
@@ -141,7 +143,6 @@ const DonationDetails = () => {
           />
 
           <div className="space-y-2 text-gray-700 dark:text-gray-300">
-          
             <p className="flex lato items-center gap-2">
               <FaDollarSign /> Max Amount: ${campaign.maxAmount.toFixed(2)}
             </p>
@@ -234,53 +235,66 @@ const DonationDetails = () => {
           </Modal>
 
           {/* Recommended Section */}
-          <div className="mt-10">
-            <h3 className="text-2xl fredoka font-semibold mb-4">
-              Recommended Donations
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recommended.length === 0
-                ? [...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-white dark:bg-gray-800 p-4 rounded shadow"
-                    >
-                      <Skeleton height={120} />
-                      <Skeleton width={100} />
-                      <Skeleton width={140} />
-                    </div>
-                  ))
-                : recommended.map((rec) => (
-                    <motion.div
-                      key={rec._id}
-                      className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <img
-                        src={rec.image}
-                        alt={rec.petName}
-                        className="w-full h-36 object-cover"
-                      />
-                      <div className="p-4">
-                        <h4 className="font-semibold fredoka text-lg mb-1">
-                          {rec.petName}
-                        </h4>
-                        <p className="text-sm lato text-gray-500">
-                          Max: ${rec.maxAmount.toFixed(2)} | Donated: $
-                          {rec.totalDonated || 0}
-                        </p>
+          <h3 className="text-2xl fredoka font-semibold mb-4 text-gray-800 py-10 dark:text-white">
+            Other Campaigns You Might Like
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {recommended.length === 0
+              ? [...Array(3)].map((_, i) => (
+                  <div
+                    key={`recommended-skeleton-${i}`}
+                    className="bg-white dark:bg-gray-800 p-4 rounded shadow"
+                  >
+                    <Skeleton height={120} />
+                    <Skeleton width={100} />
+                    <Skeleton width={140} />
+                  </div>
+                ))
+              : recommended.map((rec) => (
+                  <motion.div
+                    key={rec._id}
+                    className={`bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border ${
+                      rec.paused ? "border-red-400" : "border-green-400"
+                    }`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img
+                      src={rec.image || "/placeholder.jpg"}
+                      alt={rec.petName}
+                      className="w-full h-36 object-cover"
+                    />
+                    <div className="p-4">
+                      <h4 className="font-semibold fredoka text-lg mb-1 text-gray-900 dark:text-white">
+                        {rec.petName}
+                      </h4>
+                      <p className="text-sm lato text-gray-600 dark:text-gray-300 mb-2">
+                        Max: ${rec.maxAmount.toFixed(2)} | Donated: $
+                        {rec.totalDonated || 0}
+                      </p>
+
+                      <progress
+                        className="progress progress-success w-full mb-2"
+                        value={rec.totalDonated || 0}
+                        max={rec.maxAmount}
+                      ></progress>
+
+                      {rec.paused ? (
+                        <span className="text-sm font-medium text-red-500">
+                          Paused
+                        </span>
+                      ) : (
                         <Link
                           to={`/donations/${rec._id}`}
                           className="btn fredoka btn-sm btn-primary mt-2"
                         >
                           View
                         </Link>
-                      </div>
-                    </motion.div>
-                  ))}
-            </div>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
           </div>
         </motion.div>
       )}

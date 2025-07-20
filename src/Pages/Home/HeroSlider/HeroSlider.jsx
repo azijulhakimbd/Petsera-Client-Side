@@ -50,9 +50,9 @@ const HeroSlider = () => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-4 lg:px-8 pt-16 pb-10">
+    <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10">
       {loading ? (
-        <div className="h-[500px] rounded-2xl overflow-hidden shadow-lg">
+        <div className="h-[400px] sm:h-[450px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
           <Skeleton height={500} className="w-full rounded-2xl" />
         </div>
       ) : (
@@ -68,20 +68,20 @@ const HeroSlider = () => {
           {banners.map((banner) => (
             <SwiperSlide key={banner.id}>
               <div
-                className="relative h-[500px] bg-cover bg-center flex items-center justify-start px-10"
+                className="relative h-[400px] sm:h-[450px] md:h-[500px] bg-cover bg-center flex items-center justify-start px-4 sm:px-6 lg:px-12"
                 style={{ backgroundImage: `url(${banner.image})` }}
               >
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="bg-black/40 p-6 mt-10 rounded-xl max-w-xl"
+                  className="bg-black/50 p-4 sm:p-6 rounded-xl max-w-md sm:max-w-lg md:max-w-xl"
                 >
                   <motion.h2
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-2xl md:text-5xl font-bold fredoka text-orange-400 mb-3"
+                    className="text-xl sm:text-3xl md:text-5xl font-bold fredoka text-orange-400 mb-3"
                   >
                     {banner.title}
                   </motion.h2>
@@ -89,7 +89,7 @@ const HeroSlider = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
-                    className="text-lg md:text-xl text-orange-300 lato"
+                    className="text-sm sm:text-lg md:text-xl text-orange-300 lato"
                   >
                     {banner.subtitle}
                   </motion.p>

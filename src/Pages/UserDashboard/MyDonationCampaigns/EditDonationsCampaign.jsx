@@ -32,7 +32,7 @@ const EditMyDonationCampaign = () => {
     const fetchDonation = async () => {
       try {
         setLoading(true);
-        const response = await axiosSecure.get(`/donations/${id}`);
+        const response = await axiosSecure.get(`/donations/update-donation/${id}`);
         const donationData = response.data;
 
         reset({
@@ -55,9 +55,9 @@ const EditMyDonationCampaign = () => {
 
   const onSubmit = async (data) => {
     try {
-      await axiosSecure.put(`/donations/${id}`, data);
+      await axiosSecure.put(`/donations/update-donation/${id}`, data);
       Swal.fire("Success", "Donation updated successfully", "success");
-      navigate("/dashboard/my-donations");
+      navigate("/dashboard/my-campaigns");
     } catch (error) {
       Swal.fire("Error", "Failed to update donation", "error");
     }

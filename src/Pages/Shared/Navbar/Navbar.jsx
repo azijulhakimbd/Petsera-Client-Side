@@ -62,7 +62,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop nav */}
-        <ul className="hidden items-center gap-4 text-pink-600 Poppins font-medium lg:flex">
+        <ul className="hidden items-center gap-4 text-pink-600 fredoka font-medium lg:flex">
           <li><Link to="/" className={linkClass("/")}><FaHome />Home</Link></li>
           <li><Link to="/pets" className={linkClass("/pets")}><FaPaw />Adopt</Link></li>
           <li><Link to="/donate" className={linkClass("/donate")}><FaHeart />Donate</Link></li>
@@ -97,14 +97,14 @@ const Navbar = () => {
               {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div className="absolute top-12 right-0 bg-popover shadow-lg border rounded-md w-48 z-50">
-                  <div className="px-4 py-2 text-sm border-b text-pink-600">
+                  <div className="px-4 py-2 fredoka text-sm border-b text-pink-600">
                     {user.displayName || user.email}
                   </div>
                   <ul className="text-sm">
                     <li>
                       <Link
                         to="/dashboard"
-                        className="flex items-center gap-2 text-green-300 px-4 py-2 hover:bg-muted/50"
+                        className="flex items-center gap-2 text-green-300 px-4 py-2 fredoka hover:bg-muted/50"
                         onClick={() => setDropdownOpen(false)}
                       >
                         <FaTachometerAlt /> Dashboard
@@ -113,7 +113,7 @@ const Navbar = () => {
                     <li>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-muted/50"
+                        className="w-full text-left flex items-center fredoka gap-2 px-4 py-2 text-red-600 hover:bg-muted/50"
                       >
                         <FaSignOutAlt /> Logout
                       </button>
@@ -126,13 +126,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="rounded-md bg-primary px-3 py-2 fredoka text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="rounded-md bg-primary px-3 py-2 fredoka text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
                 Register
               </Link>
@@ -158,7 +158,7 @@ const Navbar = () => {
                 </svg>
               </summary>
 
-              <ul className="absolute right-0 mt-2 w-56 space-y-1 rounded-md bg-popover p-2 shadow-lg z-50">
+              <ul className="absolute right-0 mt-2 w-56 space-y-1 rounded-md bg-popover p-2 fredoka shadow-lg z-50">
                 <li><Link to="/" className={linkClass("/")}><FaHome />Home</Link></li>
                 <li><Link to="/pets" className={linkClass("/pets")}><FaPaw />Adopt</Link></li>
                 <li><Link to="/donate" className={linkClass("/donate")}><FaHeart />Donate</Link></li>

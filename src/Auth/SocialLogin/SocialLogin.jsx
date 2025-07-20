@@ -6,7 +6,7 @@ import { AuthContext } from "../../Context/AuthContext";
 
 
 const SocialLogin = () => {
-  const { googleSignIn,githubSignIn } = use(AuthContext)
+  const { googleSignIn,githubSignIn,} = use(AuthContext)
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from || "/";
@@ -22,19 +22,23 @@ const SocialLogin = () => {
       }
 
       const user = result.user;
-      console.log("Social login user:", user);
+      
 
       // Prepare user info for backend
       const userInfo = {
-        email: user.email,
+        email: user?.email,
+        name:user?.displayName,
+        photoURL:user?.photoURL,
         role: "user", 
         created_at: new Date().toISOString(),
         last_log_in: new Date().toISOString(),
       };
-
+      console.log(user.displayName);
+      
+      
       // Send user info to backend
       const res = await axiosInstance.post("/users", userInfo);
-      console.log("User info saved:", res.data);
+      
 
       // Navigate to desired page
       navigate(from, { replace: true });

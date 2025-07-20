@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
@@ -43,9 +44,13 @@ const FAQSection = () => {
       </h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
-          <div
+          <motion.div
             key={index}
-            className="border rounded-xl bg-white dark:bg-gray-800 shadow-md dark:border-gray-700 transition"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="border rounded-xl bg-white dark:bg-gray-800 shadow-md dark:border-gray-700"
           >
             <button
               onClick={() => toggleFAQ(index)}
@@ -59,12 +64,21 @@ const FAQSection = () => {
               )}
             </button>
 
-            {activeIndex === index && (
-              <div className="px-4 pb-4 text-gray-600 dark:text-gray-300">
-                {faq.answer}
-              </div>
-            )}
-          </div>
+            <AnimatePresence>
+              {activeIndex === index && (
+                <motion.div
+                  key="content"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden px-4 pb-4 text-gray-600 dark:text-gray-300"
+                >
+                  {faq.answer}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         ))}
       </div>
     </section>

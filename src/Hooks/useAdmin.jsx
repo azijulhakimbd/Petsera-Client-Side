@@ -5,7 +5,9 @@ const useAdmin = (email) => {
     queryKey: ["isAdmin", email],
     enabled: !!email,
     queryFn: async () => {
-      const res = await fetch(`http://localhost:3000/users/admin/${email}`);
+      const res = await fetch(
+        `https://petsera-server-side.vercel.app/users/admin/${email}`
+      );
       const data = await res.json();
       return data?.isAdmin;
     },
