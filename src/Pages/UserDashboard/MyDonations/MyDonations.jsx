@@ -20,7 +20,7 @@ const MyDonations = () => {
     queryKey: ["myDonations", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/donations/mine?email=${user.email}`);
+      const res = await axiosSecure.get(`/donations/my-donations?email=${user.email}`);
       return res.data;
     },
   });
