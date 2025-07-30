@@ -8,8 +8,8 @@ A full-featured pet adoption platform built with the MERN stack that connects lo
 **🌐** [Petsera Live Site](https://petsera.netlify.app/)
 
 ## 📂 Repositories
-- **Client Side:** [GitHub - Petsera Client](https://github.com/Programming-Hero-Web-Course4/b11a12-client-side-azijulhakimbd)
-- **Server Side:** [GitHub - Petsera Server](https://github.com/Programming-Hero-Web-Course4/b11a12-server-side-azijulhakimbd)
+- **Client Side:** [GitHub - Petsera Client](https://github.com/azijulhakimbd/Petsera-Client-Side)
+- **Server Side:** [GitHub - Petsera Server](https://github.com/azijulhakimbd/Petsera-Server-Side)
 
 ---
 
