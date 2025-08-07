@@ -103,6 +103,32 @@ Petsera is designed to simplify the pet adoption and donation process. It allows
 - ✅ Dark/Light Mode toggle
 
 ---
+## 📝 How to Run the Project Locally
 
+### ⚙️ Prerequisites
+
+- Node.js (v18+)
+- npm or yarn
+- Git
+- MongoDB Atlas Account
+- Firebase Project
+- Stripe Account
+
+### 📁 Step 1: Clone the Repositories
+
+```bash
+# Clone Client Side
+git clone https://github.com/azijulhakimbd/Petsera-Client-Side.git
+
+# Clone Server Side
+git clone https://github.com/azijulhakimbd/Petsera-Server-Side.git
+```
+
+### 🖥️ Step 2: Setup Client Side
+
+```bash
+cd Petsera-Client-Side
+npm install
+```
 
 
