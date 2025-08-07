@@ -130,5 +130,17 @@ git clone https://github.com/azijulhakimbd/Petsera-Server-Side.git
 cd Petsera-Client-Side
 npm install
 ```
+### ▶️ Start Client
+
+```bash
+npm run dev
+```
+
+### 🌐 Step 3: Setup Server Side
+
+```bash
+cd Petsera-Server-Side
+npm install
+```
 
 
