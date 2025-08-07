@@ -142,5 +142,10 @@ npm run dev
 cd Petsera-Server-Side
 npm install
 ```
+### ▶️ Start Server
+
+```bash
+npm run dev
+```
 
 
