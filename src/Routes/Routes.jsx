@@ -28,6 +28,7 @@ import DashboardHome from "../Layout/DashboardLayout/DashboardHome";
 import UpdateDonationsCampaign from "../Pages/UserDashboard/MyDonationCampaigns/EditDonationsCampaign";
 import AllDonations from "../Pages/AdminDashboard/AllDonations/AllDonations";
 import NotFound from "../Pages/Error/NotFound";
+import HomeDashoard from "../Pages/Dashboard-Home/HomeDashboard";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
      <DashboardHome></DashboardHome>
     </PrivateRoute>,
     children: [
+      {
+        index:true,
+        element: <HomeDashoard></HomeDashoard>
+      },
       {
         path: "add-pet",
         element: (
