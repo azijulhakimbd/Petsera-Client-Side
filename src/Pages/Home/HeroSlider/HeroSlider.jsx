@@ -75,13 +75,15 @@ const HeroSlider = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="bg-black/50 p-4 sm:p-6 rounded-xl max-w-md sm:max-w-lg md:max-w-xl"
+                  className="bg-black/10 backdrop-blur p-4 sm:p-6 rounded-xl max-w-md sm:max-w-lg md:max-w-xl"
                 >
                   <motion.h2
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-xl sm:text-3xl md:text-5xl font-bold fredoka text-orange-400 mb-3"
+                    className="text-xl sm:text-3xl md:text-5xl font-bold fredoka 
+             bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+             bg-clip-text text-transparent mb-3"
                   >
                     {banner.title}
                   </motion.h2>
@@ -89,7 +91,7 @@ const HeroSlider = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.6 }}
-                    className="text-sm sm:text-lg md:text-xl text-orange-300 lato"
+                    className="text-sm sm:text-lg md:text-xl text-purple-500 lato"
                   >
                     {banner.subtitle}
                   </motion.p>
