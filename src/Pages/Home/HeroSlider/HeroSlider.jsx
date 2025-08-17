@@ -82,7 +82,7 @@ const HeroSlider = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
                     className="text-xl sm:text-3xl md:text-5xl font-bold fredoka 
-             bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+             bg-gradient-to-r from-green-600 to-blue-500 
              bg-clip-text text-transparent mb-3"
                   >
                     {banner.title}

@@ -43,13 +43,13 @@ const Navbar = () => {
 
   return (
     <nav
-      className={[
-        "fixed inset-x-0 top-0 z-50 w-full transition-all duration-300",
-        isBlur
-          ? "bg-background/80 backdrop-blur-md shadow-sm"
-          : "bg-background",
-      ].join(" ")}
-    >
+  className={[
+    "fixed inset-x-0 top-0 z-50 w-full transition-all duration-300",
+    isBlur
+      ? "backdrop-blur-md shadow-sm"
+      : "bg-gradient-to-r from-pink-100 via-blue-50 to-green-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900",
+  ].join(" ")}
+>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
