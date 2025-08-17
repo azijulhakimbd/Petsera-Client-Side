@@ -39,10 +39,13 @@ const PetsCategory = () => {
           ? Array(6)
               .fill(0)
               .map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-white dark:bg-gray-800 rounded-2xl p-5 flex flex-col items-center shadow-md"
-                >
+               <div
+  key={index}
+  className="rounded-2xl p-5 flex flex-col items-center shadow-md
+             bg-gradient-to-r from-blue-50 to-purple-100
+             dark:from-gray-900 dark:to-gray-800"
+>
+
                   <Skeleton
                     circle
                     height={50}
@@ -57,7 +60,8 @@ const PetsCategory = () => {
                 key={index}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="cursor-pointer bg-white dark:bg-gray-800 text-pink-500 border-b-2 border-yellow-500 rounded-2xl p-5 flex flex-col items-center shadow-md hover:shadow-lg transition"
+                className="cursor-pointer bg-gradient-to-r from-blue-100 to-purple-200
+             dark:from-gray-900 dark:to-gray-800 text-pink-500 border-b-2 border-yellow-500 rounded-2xl p-5 flex flex-col items-center shadow-md hover:shadow-lg transition"
               >
                 <div className="text-4xl mb-3">{cat.icon}</div>
                 <p className="text-lg inter font-semibold">{cat.name}</p>
