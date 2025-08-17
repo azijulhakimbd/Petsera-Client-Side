@@ -29,6 +29,7 @@ import UpdateDonationsCampaign from "../Pages/UserDashboard/MyDonationCampaigns/
 import AllDonations from "../Pages/AdminDashboard/AllDonations/AllDonations";
 import NotFound from "../Pages/Error/NotFound";
 import HomeDashoard from "../Pages/Dashboard-Home/HomeDashboard";
+import UserProfile from "../Pages/Profile/UserProfile";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export const router = createBrowserRouter([
   {
@@ -174,7 +175,10 @@ export const router = createBrowserRouter([
         element:<AdminRoute>
           <AllDonations></AllDonations>
         </AdminRoute>
-       
+      },
+      {
+        path:'profile',
+        element:<UserProfile></UserProfile>
       }
     ],
   },

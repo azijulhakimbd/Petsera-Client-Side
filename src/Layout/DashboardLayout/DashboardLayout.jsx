@@ -10,6 +10,8 @@ import {
   FaBars,
   FaTimes,
   FaUsers,
+  FaHome,
+  FaUserCircle,
 } from "react-icons/fa";
 import { MdDarkMode, MdLightMode, MdVolunteerActivism } from "react-icons/md";
 import useAuth from "../../Hooks/useAuth";
@@ -79,6 +81,33 @@ const DashboardLayout = () => {
         {/* Sidebar content */}
         {user ? (
           <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            {/* Home */}
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-green-300 dark:hover:bg-green-700 ${
+                  isActive ? "bg-gray-300 dark:bg-gray-700 font-semibold" : "dark:text-gray-300 text-gray-800"
+                }`
+              }
+            >
+              <FaHome size={24} className="text-green-600" />
+              Home
+            </NavLink>
+
+            {/* Profile */}
+            <NavLink
+              to="/dashboard/profile"
+              className={({ isActive }) =>
+                `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-green-300 dark:hover:bg-green-700 ${
+                  isActive ? "bg-gray-300 dark:bg-gray-700 font-semibold" : "dark:text-gray-300 text-gray-800"
+                }`
+              }
+            >
+              <FaUserCircle size={24} className="text-green-700" />
+              Profile
+            </NavLink>
+
+            {/* Other existing links */}
             {[
               {
                 to: "/dashboard/add-pet",
@@ -116,7 +145,6 @@ const DashboardLayout = () => {
                 label: "My Donations",
                 bg: "pink",
               },
-              
               {
                 to: "/dashboard/all-users",
                 icon: <FaUsers className="text-blue-700 dark:text-blue-400" size={24} />,
@@ -182,7 +210,9 @@ const DashboardLayout = () => {
             <FaBars size={24} />
           </button>
 
-          <div className="font-semibold fredoka text-lg text-gray-900 dark:text-gray-100">Dashboard</div>
+          <div className="font-semibold fredoka text-lg text-gray-900 dark:text-gray-100">
+            Dashboard
+          </div>
 
           <div className="flex items-center gap-4">
             {/* Dark mode toggle */}
