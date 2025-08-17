@@ -14,7 +14,7 @@ const AdoptCallToAction = () => {
   }, []);
 
   return (
-    <section className="py-16 px-6 bg-gray-100 dark:bg-gray-900">
+    <section className="py-16 px-6 bg-base-200 dark:bg-gray-750">
       <div className="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-10">
         {/* Text Content */}
         <motion.div

@@ -26,7 +26,7 @@ const mockPets = [
   },
   {
     name: "Hancock",
-    breed: "Indie",
+    breed: "India",
     gender: "Male",
     age: "5 Months Old",
     location: "Bangalore",
@@ -35,7 +35,7 @@ const mockPets = [
   },
   {
     name: "Shadow",
-    breed: "Indie",
+    breed: "India",
     gender: "Male",
     age: "5 Months Old",
     location: "Bangalore",
@@ -71,21 +71,22 @@ const FeaturedPets = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
     >
+      {/* Section Header */}
       <div className="max-w-7xl mx-auto text-center mb-10">
-        <h2 className="text-3xl fredoka sm:text-4xl font-bold text-pink-600">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl fredoka font-bold text-pink-600">
           Looking to Adopt a Pet?
         </h2>
-        <p className="text-blue-800 inter dark:text-gray-300 mt-2 text-sm sm:text-base">
+        <p className="text-gray-700 inter dark:text-gray-300 mt-2 text-sm sm:text-base md:text-lg">
           Explore pets up for adoption and bring your new companion home!
         </p>
       </div>
 
       {/* Pet Cards Grid */}
-      <div className="grid lg:mx-90 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-7xl mx-auto">
         {(loading ? Array(4).fill({}) : pets).map((pet, idx) => (
           <motion.div
             key={idx}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-md transition hover:shadow-lg overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-md transition hover:shadow-lg overflow-hidden flex flex-col"
             custom={idx}
             variants={cardVariants}
           >
@@ -95,41 +96,47 @@ const FeaturedPets = () => {
               <img
                 src={pet.image}
                 alt={pet.name}
-                className="h-56 sm:h-60 w-full object-cover rounded-t-2xl"
+                className="h-48 sm:h-56 md:h-60 w-full object-cover rounded-t-2xl"
               />
             )}
-            <div className="p-4 text-gray-800 dark:text-gray-100 space-y-2">
-              <h3 className="text-lg Poppins font-semibold">
-                {loading ? <Skeleton width={100} /> : pet.name}
-              </h3>
-              <p className="text-sm inter text-gray-500 dark:text-gray-400">
-                {loading ? <Skeleton width={60} /> : pet.breed}
-              </p>
+            <div className="p-4 flex-1 flex flex-col justify-between text-gray-800 dark:text-gray-100 space-y-2">
+              <div>
+                <h3 className="text-lg sm:text-xl Poppins font-semibold">
+                  {loading ? <Skeleton width={100} /> : pet.name}
+                </h3>
+                <p className="text-sm sm:text-base inter text-gray-500 dark:text-gray-400">
+                  {loading ? <Skeleton width={60} /> : pet.breed}
+                </p>
 
-              <div className="flex flex-wrap gap-2 text-sm">
-                {loading ? (
-                  <>
-                    <Skeleton width={50} height={20} borderRadius={999} />
-                    <Skeleton width={70} height={20} borderRadius={999} />
-                  </>
-                ) : (
-                  <>
-                    <span className="bg-gray-200 inter dark:bg-gray-700 rounded-full px-2 py-1">{pet.gender}</span>
-                    <span className="bg-gray-200 inter dark:bg-gray-700 rounded-full px-2 py-1">{pet.age}</span>
-                  </>
-                )}
+                <div className="flex flex-wrap gap-2 mt-2 text-xs sm:text-sm">
+                  {loading ? (
+                    <>
+                      <Skeleton width={50} height={20} borderRadius={999} />
+                      <Skeleton width={70} height={20} borderRadius={999} />
+                    </>
+                  ) : (
+                    <>
+                      <span className="bg-gray-200 inter dark:bg-gray-700 rounded-full px-2 py-1">
+                        {pet.gender}
+                      </span>
+                      <span className="bg-gray-200 inter dark:bg-gray-700 rounded-full px-2 py-1">
+                        {pet.age}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                <div className="text-sm flex items-center gap-1 text-gray-600 dark:text-gray-300 mt-2">
+                  <FaMapMarkerAlt className="text-blue-500" />
+                  {loading ? <Skeleton width={80} /> : pet.location}
+                </div>
+                <div className="text-sm flex items-center gap-1 text-gray-600 dark:text-gray-300">
+                  <FaUser className="text-pink-500" />
+                  {loading ? <Skeleton width={60} /> : pet.uploader}
+                </div>
               </div>
 
-              <div className="text-sm flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                <FaMapMarkerAlt className="inter text-blue-500" />
-                {loading ? <Skeleton width={80} /> : pet.location}
-              </div>
-              <div className="text-sm flex items-center gap-1 text-gray-600 dark:text-gray-300">
-                <FaUser className="text-pink-500 inter" />
-                {loading ? <Skeleton width={60} /> : pet.uploader}
-              </div>
-
-              <div className="flex gap-4 mt-3 text-xl">
+              <div className="flex gap-4 mt-4 text-lg sm:text-xl">
                 {loading ? (
                   <>
                     <Skeleton circle width={24} height={24} />
@@ -137,10 +144,16 @@ const FeaturedPets = () => {
                   </>
                 ) : (
                   <>
-                    <a href="wa.me/8801758524125" className="text-green-600 hover:text-green-700">
+                    <a
+                      href="wa.me/8801758524125"
+                      className="text-green-600 hover:text-green-700"
+                    >
                       <BsWhatsapp />
                     </a>
-                    <a href="m.me/azijulhakimbd" className="text-blue-600 hover:text-blue-700">
+                    <a
+                      href="m.me/azijulhakimbd"
+                      className="text-blue-600 hover:text-blue-700"
+                    >
                       <BsMessenger />
                     </a>
                   </>
@@ -156,7 +169,7 @@ const FeaturedPets = () => {
         <div className="text-center mt-10">
           <motion.a
             href="/pets"
-            className="inline-block text-sm sm:text-base bg-white dark:bg-gray-700 dark:text-white text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-600 font-medium px-6 py-3 rounded-full shadow-md transition"
+            className="inline-block text-sm sm:text-base md:text-lg bg-white dark:bg-gray-700 dark:text-white text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-600 font-medium px-6 py-3 rounded-full shadow-md transition"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
