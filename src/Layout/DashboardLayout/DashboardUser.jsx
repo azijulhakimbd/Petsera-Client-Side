@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import { Link, NavLink, Outlet } from "react-router";
+import { useNavigate } from "react-router";
 import {
   FaHome,
   FaUserCircle,
@@ -22,7 +23,7 @@ const DashboardUser = () => {
   const { user } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
@@ -145,7 +146,6 @@ const DashboardUser = () => {
               My Added Pets
             </NavLink>
 
-          
             <NavLink
               to="/dashboard/adoption-requests"
               className={({ isActive }) =>
@@ -262,15 +262,31 @@ const DashboardUser = () => {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="relative flex items-center gap-2 focus:outline-none"
               >
-                {user?.photoURL ? (
-                  <motion.img
-                    src={user?.photoURL}
-                    alt={user?.displayName || "User"}
-                    className="w-9 h-9 rounded-full object-cover border border-primary"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                {user ? (
+                  <button
+                    onClick={() => navigate("/dashboard/profile")}
+                    className="relative flex items-center gap-2 focus:outline-none"
+                  >
+                    {user?.photoURL ? (
+                      <img
+                        src={user?.photoURL}
+                        alt={user?.displayName || "User"}
+                        className="w-9 h-9 rounded-full object-cover border border-primary"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    ) : (
+                      <div
+                        className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-white font-bold"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {user?.displayName?.charAt(0).toUpperCase() || "U"}
+                      </div>
+                    )}
+                  </button>
                 ) : (
                   <motion.div
                     className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-white font-bold"

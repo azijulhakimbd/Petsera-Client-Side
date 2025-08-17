@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import {
   FaPlusCircle,
@@ -20,9 +21,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const DashboardLayout = () => {
   const { user } = useAuth();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
@@ -86,7 +86,9 @@ const DashboardLayout = () => {
               to="/dashboard"
               className={({ isActive }) =>
                 `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-green-300 dark:hover:bg-green-700 ${
-                  isActive ? "bg-gray-300 dark:bg-gray-700 font-semibold" : "dark:text-gray-300 text-gray-800"
+                  isActive
+                    ? "bg-gray-300 dark:bg-gray-700 font-semibold"
+                    : "dark:text-gray-300 text-gray-800"
                 }`
               }
             >
@@ -99,7 +101,9 @@ const DashboardLayout = () => {
               to="/dashboard/profile"
               className={({ isActive }) =>
                 `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-green-300 dark:hover:bg-green-700 ${
-                  isActive ? "bg-gray-300 dark:bg-gray-700 font-semibold" : "dark:text-gray-300 text-gray-800"
+                  isActive
+                    ? "bg-gray-300 dark:bg-gray-700 font-semibold"
+                    : "dark:text-gray-300 text-gray-800"
                 }`
               }
             >
@@ -111,55 +115,100 @@ const DashboardLayout = () => {
             {[
               {
                 to: "/dashboard/add-pet",
-                icon: <FaPlusCircle className="text-blue-600 dark:text-blue-400" size={24} />,
+                icon: (
+                  <FaPlusCircle
+                    className="text-blue-600 dark:text-blue-400"
+                    size={24}
+                  />
+                ),
                 label: "Add a Pet",
                 bg: "blue",
               },
               {
                 to: "/dashboard/my-pets",
-                icon: <FaPaw className="text-green-600 dark:text-green-400" size={24} />,
+                icon: (
+                  <FaPaw
+                    className="text-green-600 dark:text-green-400"
+                    size={24}
+                  />
+                ),
                 label: "My Added Pets",
                 bg: "green",
               },
               {
                 to: "/dashboard/adoption-requests",
-                icon: <FaClipboardList className="text-yellow-600 dark:text-yellow-400" size={24} />,
+                icon: (
+                  <FaClipboardList
+                    className="text-yellow-600 dark:text-yellow-400"
+                    size={24}
+                  />
+                ),
                 label: "Adoption Requests",
                 bg: "yellow",
               },
               {
                 to: "/dashboard/create-campaign",
-                icon: <FaDonate className="text-purple-600 dark:text-purple-400" size={24} />,
+                icon: (
+                  <FaDonate
+                    className="text-purple-600 dark:text-purple-400"
+                    size={24}
+                  />
+                ),
                 label: "Create Donation Campaign",
                 bg: "purple",
               },
               {
                 to: "/dashboard/my-campaigns",
-                icon: <FaHandHoldingHeart className="text-red-600 dark:text-red-400" size={24} />,
+                icon: (
+                  <FaHandHoldingHeart
+                    className="text-red-600 dark:text-red-400"
+                    size={24}
+                  />
+                ),
                 label: "My Donation Campaigns",
                 bg: "red",
               },
               {
                 to: "/dashboard/my-donations",
-                icon: <FaGift className="text-green-600 dark:text-green-400" size={24} />,
+                icon: (
+                  <FaGift
+                    className="text-green-600 dark:text-green-400"
+                    size={24}
+                  />
+                ),
                 label: "My Donations",
                 bg: "pink",
               },
               {
                 to: "/dashboard/all-users",
-                icon: <FaUsers className="text-blue-700 dark:text-blue-400" size={24} />,
+                icon: (
+                  <FaUsers
+                    className="text-blue-700 dark:text-blue-400"
+                    size={24}
+                  />
+                ),
                 label: "All Users",
                 bg: "pink",
               },
               {
                 to: "/dashboard/all-pets",
-                icon: <FaPaw className="text-pink-600 dark:text-pink-400" size={24} />,
+                icon: (
+                  <FaPaw
+                    className="text-pink-600 dark:text-pink-400"
+                    size={24}
+                  />
+                ),
                 label: "All Pets",
                 bg: "red",
               },
               {
                 to: "/dashboard/all-donations",
-                icon: <MdVolunteerActivism className="text-green-600 dark:text-green-400" size={24} />,
+                icon: (
+                  <MdVolunteerActivism
+                    className="text-green-600 dark:text-green-400"
+                    size={24}
+                  />
+                ),
                 label: "All Donations",
                 bg: "pink",
               },
@@ -168,7 +217,9 @@ const DashboardLayout = () => {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-${item.bg}-100 dark:hover:bg-${item.bg}-900 ${
+                  `flex items-center gap-2 fredoka px-4 py-2 rounded hover:bg-${
+                    item.bg
+                  }-100 dark:hover:bg-${item.bg}-900 ${
                     isActive
                       ? `bg-${item.bg}-200 dark:bg-${item.bg}-700 font-semibold`
                       : "dark:text-gray-300 text-gray-800"
@@ -227,7 +278,7 @@ const DashboardLayout = () => {
             {/* Avatar */}
             {user ? (
               <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={() => navigate("/dashboard/profile")}
                 className="relative flex items-center gap-2 focus:outline-none"
               >
                 {user?.photoURL ? (
@@ -235,9 +286,17 @@ const DashboardLayout = () => {
                     src={user?.photoURL}
                     alt={user?.displayName || "User"}
                     className="w-9 h-9 rounded-full object-cover border border-primary"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-white font-bold">
+                  <div
+                    className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-white font-bold"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     {user?.displayName?.charAt(0).toUpperCase() || "U"}
                   </div>
                 )}

@@ -56,7 +56,7 @@ const Navbar = () => {
           <img
             src="https://i.postimg.cc/yNj7nhmJ/Petsera.png"
             alt="Petsera logo"
-            className="w-16"
+            className="w-12"
           />
          
         </Link>
